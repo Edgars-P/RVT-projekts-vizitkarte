@@ -8,15 +8,37 @@ form label {
   grid-template-columns: 20% 1fr;
   margin: 0.3rem;
   line-height: 1.5rem;
+
+  background: white;
+  border-radius: 1rem;
+
+  overflow: hidden;
+}
+
+form label span.name {
+  background: #ccc;
+  line-height: 2rem;
+  padding-left: 1rem;
+  border-bottom-right-radius: 1rem;
+  font-weight: 600;
+}
+
+form label span.value {
+  background: #ccc;
 }
 
 form label input {
+  display: block;
+  width: calc( 100% - 1rem );
   border: none;
   background: white;
   border-radius: 0.3rem;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 0;
   padding: 0.1rem;
+  padding-left: 1rem;
   font-size: 1rem;
-  height: 1.5rem;
+  height: 2rem;
 }
 
 form input[type="submit"] {

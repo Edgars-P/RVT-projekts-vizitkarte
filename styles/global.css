@@ -1,6 +1,6 @@
-@import "https://cdn.jsdelivr.net/npm/@fontsource/cairo@4.5.11/400.css";
-@import "https://cdn.jsdelivr.net/npm/@fontsource/cairo@4.5.11/600.css";
-@import "https://cdn.jsdelivr.net/npm/@fontsource/cairo@4.5.11/700.css";
+@import "https://cdn.jsdelivr.net/npm/@fontsource/cairo@4/400.css";
+@import "https://cdn.jsdelivr.net/npm/@fontsource/cairo@4/600.css";
+@import "https://cdn.jsdelivr.net/npm/@fontsource/cairo@4/700.css";
 
 * {
   font-family: 'Cairo', sans-serif;
