@@ -1,0 +1,62 @@
+div.card {
+  height: max-content;
+  background: #aaa;
+  margin: auto;
+  
+  position: relative;
+  display: grid;
+  
+  width: min(30rem, calc( 100vw - 3rem ));
+  min-width: max-content;
+
+  margin-top: calc(50vh);
+  transform: translateY(-50%);
+
+  border-radius: 1rem;
+
+  transition: transform 0.5s;
+
+  box-shadow: 0.5rem 0.5rem 1rem #0004;
+}
+
+div.card.flip {
+  transform: translateY(-50%) scaleX(0);
+}
+
+.flipbtn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: xx-large;
+
+  cursor: pointer;
+}
+
+.title {
+  text-align: center;
+  font-weight: 700;
+
+  background: var(--bg);
+  width: max-content;
+  margin: auto;
+  margin-bottom: 2rem;
+  padding: 1rem 2rem;
+
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+div.card div.side {
+  grid-row-start: 1;
+  grid-column-start: 1;
+}
+
+div.card.side1 div.side2 {
+  opacity: 0;
+  pointer-events: none;
+}
+
+div.card.side2 div.side1 {
+  opacity: 0;
+  pointer-events: none;
+}
