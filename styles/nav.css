@@ -14,7 +14,7 @@ nav ul li {
 }
 
 nav ul li a {
-  background: var(--fg);
+  background: var(--primary);
   padding: 0.5rem;
   display: block;
   text-decoration: none;
@@ -23,7 +23,7 @@ nav ul li a {
 }
 
 nav ul li a.selected {
-  background: var(--bg);
+  background: var(--background);
 }
 
 a.hamburger, a.hamburgerClose {
@@ -37,7 +37,7 @@ a.hamburger, a.hamburgerClose {
     top: 1rem;
     left: 1rem;
     font-size: 2rem;
-    background: #ccc;
+    background: var(--primary);
     width: 3rem;
     height: 3rem;
     text-align: center;
@@ -78,7 +78,7 @@ a.hamburger, a.hamburgerClose {
     left: 0;
     width: 75vw;
     height: 100vh;
-    background: #aaa;
+    background: var(--background);
   }
 
   nav#nav:target {

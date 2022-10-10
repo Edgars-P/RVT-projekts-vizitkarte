@@ -1,6 +1,6 @@
 div.card {
   height: max-content;
-  background: #aaa;
+  background: var(--accent);
   margin: auto;
   
   position: relative;
@@ -29,6 +29,8 @@ div.card.flip {
   right: 0.5rem;
   font-size: xx-large;
 
+  color: var(--primary);
+
   cursor: pointer;
 }
 
@@ -36,7 +38,7 @@ div.card.flip {
   text-align: center;
   font-weight: 700;
 
-  background: var(--bg);
+  background: var(--secondary);
   width: max-content;
   margin: auto;
   margin-bottom: 2rem;

@@ -13,7 +13,7 @@ ul.contacts li * {
 
 ul.contacts li {
   font-size: 0px;
-  background: var(--bg);
+  background: var(--secondary);
   border-radius: 1rem;
   overflow: hidden;
 
@@ -21,7 +21,7 @@ ul.contacts li {
 }
 
 ul.contacts .heading {
-  background: var(--fg);
+  background: var(--primary);
   padding: 0.2rem;
   padding-left: 1rem;
   padding-right: 1rem;
@@ -41,12 +41,12 @@ ul.contacts .heading {
 
 ul.contacts .contentwrap {
   display: inline-block;
-  background: var(--fg);
+  background: var(--primary);
   height: 2rem;
 }
 
 ul.contacts .content {
-  background: var(--bg);
+  background: var(--secondary);
   border-top-left-radius: 1rem;
   padding: 0.2rem;
   padding-left: 1rem;
@@ -62,7 +62,7 @@ ul.links {
 }
 
 ul.links li {
-  background: var(--bg);
+  background: var(--secondary);
   padding: 0.5rem;
   text-align: center;
   border-radius: 0.5rem;
