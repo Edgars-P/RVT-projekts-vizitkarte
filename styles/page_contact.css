@@ -50,4 +50,5 @@ form input[type="submit"] {
   margin: 1rem auto 0 auto;
   font-weight: bold;
   background: var(--secondary);
+  cursor: pointer;
 }

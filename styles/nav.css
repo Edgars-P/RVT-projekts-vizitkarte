@@ -22,6 +22,11 @@ nav ul li a {
   font-size: large;
 }
 
+nav ul li a[href="#"] {
+  text-decoration: line-through;
+  text-decoration-color: #0005;
+}
+
 nav ul li a.selected {
   background: var(--background);
 }
