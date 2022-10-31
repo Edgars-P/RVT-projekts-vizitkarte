@@ -5,9 +5,6 @@ div.card {
   
   position: relative;
   display: grid;
-  
-  width: min(30rem, calc( 100vw - 3rem ));
-  min-width: max-content;
 
   margin-top: calc(50vh);
   transform: translateY(-50%);
@@ -17,6 +14,11 @@ div.card {
   transition: transform 0.5s;
 
   box-shadow: 0.5rem 0.5rem 1rem #0004;
+}
+
+div.card.sized {
+	width: min(30rem, calc( 100vw - 3rem ));
+  min-width: max-content;
 }
 
 div.card.flip {
