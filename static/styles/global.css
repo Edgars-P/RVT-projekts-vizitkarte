@@ -1,0 +1,37 @@
+@import "https://cdn.jsdelivr.net/npm/@fontsource/cairo@4/400.css";
+@import "https://cdn.jsdelivr.net/npm/@fontsource/cairo@4/600.css";
+@import "https://cdn.jsdelivr.net/npm/@fontsource/cairo@4/700.css";
+
+* {
+  font-family: 'Cairo', sans-serif;
+}
+
+:root {
+  --secondary: #C8E6C9;
+  --primary: #81C784;
+  --background: #E8F5E9;
+  --accent: #2E7D32;
+}
+
+a {
+  color: #000;
+  text-decoration: underline;
+  text-decoration-color: #aaa
+}
+
+html {
+  background: var(--background);
+}
+
+main {
+	--margin-sides: max(0.5rem, 20vw);
+	width: calc( 100% - 2 * var(--margin-sides));
+	padding: 0 var(--margin-sides);
+}
+
+p {
+	background: var(--secondary);
+	padding: 0.5rem;
+	margin: 1rem 0.5rem;
+	border-radius: 0.5rem;
+}
