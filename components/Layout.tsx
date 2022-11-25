@@ -1,11 +1,10 @@
 import { ComponentChildren } from "preact";
+import { Head } from "$fresh/runtime.ts";
 
 export default function Layout(props: {title: string, page: string, children: ComponentChildren}){
   return (
     <>
-      <html lang="en"/>
-
-      <head>
+      <Head>
         <meta charSet="UTF-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -18,7 +17,7 @@ export default function Layout(props: {title: string, page: string, children: Co
         <script src={`/scripts/page_${props.page}.js`} defer></script>
 
         <title>Document</title>
-      </head>
+      </Head>
       <body>
         <Navigation page={props.page}/>
         {props.children}
