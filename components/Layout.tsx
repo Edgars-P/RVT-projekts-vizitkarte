@@ -16,7 +16,7 @@ export default function Layout(props: {title: string, page: string, children: Co
         <link rel="stylesheet" href={`/styles/page_${props.page}.css`}/>
         <script src={`/scripts/page_${props.page}.js`} defer></script>
 
-        <title>Document</title>
+        <title>{props.title} - Edgara Polis</title>
       </Head>
       <body>
         <Navigation page={props.page}/>

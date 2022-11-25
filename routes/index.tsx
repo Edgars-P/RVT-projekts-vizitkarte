@@ -29,7 +29,7 @@ export default function Home() {
               <span class="heading">E-pasts:</span>
               <span class="contentwrap">
                 <span class="content">
-                  <a href="mailto:edgars@edgara.id.lv">edgars@edgara.id.lv</a>
+                  <a href="mailto:edgars@example.lv">edgars@example.lv</a>
                 </span>
               </span>
             </li>
