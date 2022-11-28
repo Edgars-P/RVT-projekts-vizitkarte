@@ -14,11 +14,17 @@ div.card {
   transition: transform 0.5s;
 
   box-shadow: 0.5rem 0.5rem 1rem #0004;
+
+  width: min(30rem, calc( 100vw - 3rem ));
 }
 
-div.card.sized {
-	width: min(30rem, calc( 100vw - 3rem ));
-  min-width: max-content;
+div.card div.content {
+  width: 90%;
+  min-height: 5rem;
+  background-color: var(--secondary);
+  margin: 1rem auto;
+  border-radius: 1rem;
+  padding: 0.5rem
 }
 
 div.card.flip {
