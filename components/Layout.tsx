@@ -38,7 +38,7 @@ function Navigation(props: {page: string}) {
             <a href="/me" class={props.page=="me"?"selected":""}>Par mani</a>
           </li>
           <li>
-            <a href="#" class={props.page=="portfolio"?"selected":""}>Portfolio</a>
+            <a href="/reviews" class={props.page=="reviews"?"selected":""}>Atsauksmes</a>
           </li>
           <li>
             <a href="/contact" class={props.page=="contact"?"selected":""}>Kontakti</a>

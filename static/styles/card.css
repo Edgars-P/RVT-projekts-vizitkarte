@@ -1,3 +1,14 @@
+div.cardWrap {
+  justify-items: center;
+  align-items: center;
+  display: grid;
+
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+
+  min-height: calc(100vh - var(--nav-height) - 4rem);
+}
+
 div.card {
   height: max-content;
   background: var(--accent);
@@ -5,9 +16,6 @@ div.card {
   
   position: relative;
   display: grid;
-
-  margin-top: calc(50vh);
-  transform: translateY(-50%);
 
   border-radius: 1rem;
 

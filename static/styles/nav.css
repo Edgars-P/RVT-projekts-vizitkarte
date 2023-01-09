@@ -1,25 +1,34 @@
+nav {
+  height: var(--nav-height);
+}
+
 nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
 
+  height: var(--nav-height);
+
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+
 }
 
 nav ul li {
-  display: inline-block;
+  display: block;
   text-align: center;
   width: 100%;
+  height: var(--nav-height);
 }
 
 nav ul li a {
   background: var(--primary);
-  padding: 0.5rem;
   display: block;
   text-decoration: none;
   font-weight: 900;
   font-size: large;
+  height: var(--nav-height);
+  line-height: var(--nav-height);
 }
 
 nav ul li a[href="#"] {

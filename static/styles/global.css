@@ -11,6 +11,8 @@
   --primary: #81C784;
   --background: #E8F5E9;
   --accent: #2E7D32;
+
+  --nav-height: 3rem;
 }
 
 a {
