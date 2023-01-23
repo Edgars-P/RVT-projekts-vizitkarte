@@ -1,5 +1,6 @@
 import { ComponentChildren } from "preact";
 import { Head } from "$fresh/runtime.ts";
+import ViewCount from "../islands/ViewCount.tsx";
 
 export default function Layout(props: {title: string, page: string, children: ComponentChildren}){
   return (
@@ -21,6 +22,8 @@ export default function Layout(props: {title: string, page: string, children: Co
       <body>
         <Navigation page={props.page}/>
         {props.children}
+
+        <ViewCount />
       </body>
     </>
   )

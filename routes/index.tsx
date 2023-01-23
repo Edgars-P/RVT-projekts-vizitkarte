@@ -1,5 +1,6 @@
 import { Head } from "$fresh/runtime.ts";
 import Layout from "../components/Layout.tsx";
+import db from "../database.ts";
 
 export default function Home() {
   return (
