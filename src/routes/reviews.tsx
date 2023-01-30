@@ -1,5 +1,6 @@
-import Layout from "../components/Layout.tsx";
-import Card from "../components/Card.tsx";
+import "../styles/Reviews.css"
+
+import Card from "../components/Card.js";
 
 const reviews = [
   {
@@ -32,7 +33,7 @@ const reviews = [
 
 export default function Feedback() {
   return (
-    <Layout page="reviews" title="Atsauksmes">
+    
       <Card>
         <h1 class="title">
           Atsauksmes
@@ -43,7 +44,7 @@ export default function Feedback() {
         {reviews.map(review => (
 
           <div class="content">
-            <div className="reviewHeader">
+            <div class="reviewHeader">
               <img
                 src={"https://api.dicebear.com/5.x/bottts/svg?seed="+encodeURIComponent(review.name)}
                 alt={review.name}
@@ -64,6 +65,6 @@ export default function Feedback() {
           </div>
         ))}
       </Card>
-    </Layout>
+    
   );
 }

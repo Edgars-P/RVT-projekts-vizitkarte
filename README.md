@@ -1,11 +1,3 @@
-# fresh project
+# RVT projekts vizītkarte
 
-### Usage
-
-Start the project:
-
-```
-deno task start
-```
-
-This will watch the project directory and restart as necessary.
+Vizītkartes un nākotnes bloga mājaslapa uz [SolidStart](https://start.solidjs.com/getting-started/what-is-solidstart) un [Knex (sqlite)](https://www.npmjs.com/package/knex) bāzes.

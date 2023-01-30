@@ -1,26 +1,28 @@
-import Layout from "../components/Layout.tsx";
-import { Handlers } from "$fresh/server.ts";
-import Card from "../components/Card.tsx";
-
-export const handler: Handlers = {
-  async POST(req, ctx) {
-    const form = await req.formData();
-    console.log([...form]);
-    return new Response("", {
-      status: 301,
-      headers: { location: "/contact-success" },
-    });
-  },
-};
+import { A, redirect } from "solid-start";
+import { createServerAction$ } from "solid-start/server/data.js";
+import { Contact as ContactType, knexInstance } from "~/scripts/database.js";
+import Card from "../components/Card.js";
+import "../styles/Contact.css"
 
 export default function Contact() {
+
+  const [_, {Form}] = createServerAction$(async (formData: FormData) => {
+    await knexInstance<ContactType>('contacts').insert({
+      name: formData.get("name")?.toString() ?? "???",
+      surname: formData.get("surname")?.toString() ?? "???",
+      email: formData.get("email")?.toString() ?? "???",
+    })
+
+    return redirect("/contact-success")
+  })
+
   return (
-    <Layout title="Sazinies ar mani!" page="contact">
+    
       <Card>
         <h1 class="title">
           Sazinies ar mani!
         </h1>
-        <form action="" method="post">
+        <Form action="" method="post">
           <label for="name">
             <span class="name">Vārds</span>
             <span class="value">
@@ -40,8 +42,8 @@ export default function Contact() {
             </span>
           </label>
           <input type="submit" value="Iesniegt" />
-        </form>
+        </Form>
       </Card>
-    </Layout>
+    
   );
 }

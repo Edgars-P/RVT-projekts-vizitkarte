@@ -1,9 +1,9 @@
-import Layout from "../components/Layout.tsx";
-import Card from "../components/Card.tsx";
+
+import Card from "../components/Card.js";
 
 export default function AboutMe() {
   return (
-    <Layout page="me" title="Par mani">
+    
       <Card>
         <h1 class="title">
           Par mani
@@ -24,6 +24,6 @@ export default function AboutMe() {
           </p>
         </div>
       </Card>
-    </Layout>
+    
   );
 }
