@@ -1,14 +1,16 @@
 
-import Card from "../components/Card.js";
 
 export default function AboutMe() {
   return (
-    
-      <Card>
-        <h1 class="title">
+
+    <div class="is-max-desktop container">
+      <div class="card">
+        <div class="card-header">
+        <div class="card-header-title">
           Par mani
-        </h1>
-        <div class="content">
+        </div>
+        </div>
+        <div class="card-content">
           <p>
             Sveiki! <br />
             Mans vārds ir Edgars Polis
@@ -23,7 +25,8 @@ export default function AboutMe() {
             culpa qui officia deserunt mollit anim id est laborum.
           </p>
         </div>
-      </Card>
-    
+      </div>
+    </div>
+
   );
 }

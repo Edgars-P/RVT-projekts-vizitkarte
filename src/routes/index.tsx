@@ -3,25 +3,28 @@ import "../styles/Home.css"
 
 export default function Home() {
 
-  const [flipstate, setFlipState] = createSignal<"s1"|"s2">("s1")
+  const [flipstate, setFlipState] = createSignal<"s1" | "s2">("s1")
   const [isFlip, setIsFlip] = createSignal(false)
 
   function flipCard() {
     setIsFlip(true)
-    setTimeout(()=> {
-      setFlipState(()=>flipstate()=="s1"?"s2":"s1")
-      setIsFlip(()=>false)
+    setTimeout(() => {
+      setFlipState(() => flipstate() == "s1" ? "s2" : "s1")
+      setIsFlip(() => false)
     }, 500)
   }
 
   return (
 
-    <div class="cardWrap">
-      <div class="card sized" classList={{ side1: flipstate() == "s1", side2: flipstate() == "s2", flip: isFlip() }}>
+    <div class="is-max-desktop container">
+      <div class="card">
         <i class="bi bi-arrow-repeat flipbtn" onclick={flipCard}></i>
-
-        <div class="side side1">
-          <h1 class="title">Mana vizītkarte</h1>
+        <div class="card-header">
+          <div class="card-header-title">
+            Mana vizītkarte
+          </div>
+        </div>
+        <div class="card-content">
 
           <ul class="contacts">
             <li>
@@ -49,10 +52,15 @@ export default function Home() {
           </ul>
         </div>
 
-        <div class="side side2">
-          <h1 class="title">
-            Linki:
-          </h1>
+
+        <div class="card-header">
+          <div class="card-header-title">
+            Linki
+          </div>
+        </div>
+
+        <div class="card-content">
+
 
           <ul class="links">
             <li>

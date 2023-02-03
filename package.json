@@ -17,9 +17,11 @@
   "dependencies": {
     "@solidjs/meta": "^0.28.2",
     "@solidjs/router": "^0.7.0",
+    "bulma": "^0.9.4",
     "knex": "^2.4.2",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
+    "sass": "^1.58.0",
     "sequelize": "^6.28.0",
     "solid-js": "^1.6.9",
     "solid-start": "^0.2.15",
