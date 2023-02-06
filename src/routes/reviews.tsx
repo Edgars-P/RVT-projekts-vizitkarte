@@ -1,4 +1,4 @@
-import { Suspense } from "solid-js";
+import { For, Suspense } from "solid-js";
 import { useRouteData } from "solid-start/data";
 import { createServerAction$, createServerData$, redirect } from "solid-start/server";
 import { knexInstance, Reviews } from "~/scripts/database";
@@ -11,14 +11,15 @@ export function routeData() {
 export default function Feedback() {
 
   const [_, { Form }] = createServerAction$(async (formData: FormData) => {
-    console.log(formData);
-    
+
     await knexInstance<Reviews>('reviews').insert({
       name: formData.get("name")?.toString() ?? "???",
       stars: parseInt(formData.get("stars")?.toString() ?? "5"),
       review: formData.get("review")?.toString() ?? "???",
     })
-  
+
+    return redirect("/reviews")
+
   })
 
   const submittedReviews = useRouteData<typeof routeData>()
@@ -42,7 +43,7 @@ export default function Feedback() {
               <label class="label">Zvaigznes</label>
               <div class="select">
                 <select name="stars" id="stars">
-                  {Array(5).fill("").map((_,i)=>(<option value={5-i}>{5-i}</option>))}
+                  {Array(5).fill("").map((_, i) => (<option value={5 - i}>{5 - i}</option>))}
                 </select>
               </div>
             </div>
@@ -63,32 +64,38 @@ export default function Feedback() {
           </div>
         </div>
         <div class="card-content">
-        <Suspense fallback={(<div>Ielādē...</div>)}>
-          
-          {submittedReviews?.call(null)?.map(review => (
-
-            <div class="content">
-              <div class="reviewHeader">
-                <img
-                  src={"https://api.dicebear.com/5.x/bottts/svg?seed=" + encodeURIComponent(review.name)}
-                  alt={review.name}
-                  width={30}
-                  height={30}
-                />
-                <span class="name">
-                  {review.name}
-                </span>
-                <span class="rating">
-                  {Array(5).fill(0).map((_, i) => (
-
-                    <i class={"bi " + ((i + 1 <= review.stars) ? "bi-star-fill" : "bi-star")}></i>
-                  ))}
-                </span>
+          <Suspense fallback={(<div>Ielādē...</div>)}>
+            <For each={submittedReviews?.call(null)} fallback={(
+              <div class="notification">
+                <b>Nav atsauksmes {":("}</b> <br />
+                Esi pirmais!
               </div>
-              <p>{review.review}</p>
-            </div>
-          ))}
-        </Suspense>
+            )}>
+              {(review) => (
+                <div class="content">
+                  <div class="reviewHeader">
+                    <img
+                      src={"https://api.dicebear.com/5.x/bottts/svg?seed=" + encodeURIComponent(review.name)}
+                      alt={review.name}
+                      width={30}
+                      height={30}
+                    />
+                    <span class="name">
+                      {review.name}
+                    </span>
+                    <span class="rating">
+                      {Array(5).fill(0).map((_, i) => (
+
+                        <i class={"bi " + ((i + 1 <= review.stars) ? "bi-star-fill" : "bi-star")}></i>
+                      ))}
+                    </span>
+                  </div>
+                  <p>{review.review}</p>
+                </div>
+              )}
+            </For>
+
+          </Suspense>
         </div>
 
       </div>

@@ -11,6 +11,7 @@ export default function Navigation() {
     { href: "/me", name: "Par mani" },
     { href: "/reviews", name: "Atsauksmes" },
     { href: "/contact", name: "Kontakti" },
+    { href: "/blog", name: "Blogs" },
   ]
 
   return (
