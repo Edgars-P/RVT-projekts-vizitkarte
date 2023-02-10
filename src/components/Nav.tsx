@@ -40,9 +40,9 @@ export default function Navigation() {
           <div class="navbar-end">
             <div class="navbar-item">
               <div class="buttons">
-                <a class="button">
+                <A href="/admin/dash" class="button">
                   Admin
-                </a>
+                </A>
               </div>
             </div>
           </div>
