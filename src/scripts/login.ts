@@ -8,25 +8,17 @@ export async function isLoggedIn(r: Request) {
     const res = await knexInstance<Admins>("admins")
         .select("*")
         .from("admins")
-        .where({secret: cookies["secret"]??"aaa"})
-
-    console.log(res);
-    
+        .where({secret: cookies["secret"]??"aaa"})    
 
     return res[0]
 }
 
 export async function logIn(user: string, pass:string): Promise<string|false> {
 
-    console.log(user, pass, hashPassword(pass));
-    
-
     const res = await knexInstance<Admins>("admins")
         .select("*")
         .from("admins")
         .where({username: user, password: await hashPassword(pass)})
-
-    console.log(res);
 
     if(res.length == 0) return false
 

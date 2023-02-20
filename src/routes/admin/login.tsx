@@ -1,59 +1,105 @@
-import { Suspense, } from "solid-js"
-import { createCookie, createRouteData, useNavigate, useRouteData } from "solid-start"
-import { createServerAction$, createServerData$, redirect } from "solid-start/server"
-import { isLoggedIn, logIn } from "~/scripts/login"
-
+import { Suspense } from "solid-js";
+import {
+  createCookie,
+  createRouteData,
+  useNavigate,
+  useRouteData,
+} from "solid-start";
+import {
+  createServerAction$,
+  createServerData$,
+  redirect,
+} from "solid-start/server";
+import { isLoggedIn, logIn } from "~/scripts/login";
 
 export function routeData() {
-	return createServerData$(async (_, f) => {
-		return isLoggedIn(f.request)
-	})
+  return createServerData$(async (_, f) => {
+    return isLoggedIn(f.request);
+  });
 }
 
 export default function LoginView() {
+  const isLoggedInResource = useRouteData<typeof routeData>();
 
-	const isLoggedInResource = useRouteData<typeof routeData>()
+  const navigate = useNavigate();
 
-	const navigate = useNavigate()
+  const [_, { Form }] = createServerAction$(async (formdata: FormData) => {
+    const res = await logIn(
+      formdata.get("user")?.toString() ?? "",
+      formdata.get("pass")?.toString() ?? "",
+    );
 
-	const [_, { Form }] = createServerAction$(async (formdata: FormData) => {
-		const res = await logIn(
-			formdata.get("user")?.toString() ?? "", 
-			formdata.get("pass")?.toString() ?? ""
-		)
+    if (res === false) return redirect("?err");
 
-		if(res === false) return redirect("?err")
+    return redirect("/admin/dash", {
+      headers: {
+        "Set-Cookie": `secret=${res}; SameSite=Strict; HttpOnly; Path=/`,
+      },
+    });
+  });
 
-		return redirect("/admin/dash", {headers: {"Set-Cookie": `secret=${res}; SameSite=Strict; HttpOnly; Path=/`}})
-	})
-
-	return (
-		<div class="is-max-desktop container">
-			<div class="card">
-				<div class="card-header">
-					<div class="card-header-title">
-						Administratora pierakstīšanās
-					</div>
-				</div>
-				<div class="card-content">
-					<Suspense fallback={(<p>Ielādē...</p>)}>
-						{isLoggedInResource() ? (
-							<>
-								<h1>Tu esi pierakstījies!</h1>
-								<button class="button" onClick={() => navigate("/admin/dash", { replace: true })}>
-									Uz administratora logu
-								</button>
-							</>
-						) : (
-							<Form>
-								<input type="text" name="user" /><br />
-								<input type="password" name="pass" /><br />
-								<input type="submit" value="Pierakstīties!" />
-							</Form>
-						)}
-					</Suspense>
-				</div>
-			</div>
-		</div>
-	)
+  return (
+    <div class="is-max-desktop container">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-title">
+            Administratora pierakstīšanās
+          </div>
+        </div>
+        <div class="card-content">
+          <Suspense fallback={<p>Ielādē...</p>}>
+            {isLoggedInResource()
+              ? (
+                <>
+                  <h1>Tu esi pierakstījies!</h1>
+                  <button
+                    class="button"
+                    onClick={() => navigate("/admin/dash", { replace: true })}
+                  >
+                    Uz administratora logu
+                  </button>
+                </>
+              )
+              : (
+                <Form>
+                  <div class="field">
+                    <div class="control has-icons-left has-icons-right">
+                      <input
+                        class="input"
+                        type="text"
+                        name="user"
+                        placeholder="Lietotājvārds"
+                      />
+                      <span class="icon is-small is-left">
+												<i class="bi bi-person-badge-fill"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="control has-icons-left">
+                      <input
+                        class="input"
+                        type="password"
+                        name="pass"
+                        placeholder="Parole"
+                      />
+                      <span class="icon is-small is-left">
+											<i class="bi bi-key-fill"></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="field is-grouped is-grouped-centered">
+                    <p class="control">
+                      <button class="button is-success">
+                        Ienākt
+                      </button>
+                    </p>
+                  </div>
+                </Form>
+              )}
+          </Suspense>
+        </div>
+      </div>
+    </div>
+  );
 }
