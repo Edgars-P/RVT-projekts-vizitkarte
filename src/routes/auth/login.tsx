@@ -1,4 +1,4 @@
-import { Suspense } from "solid-js";
+import { createSignal, Suspense } from "solid-js";
 import {
   createCookie,
   createRouteData,
@@ -25,10 +25,13 @@ export default function LoginView() {
   const getLoginResource = useRouteData<typeof routeData>();
 
   const [_, { Form }] = createServerAction$(async (formdata: FormData) => {
+    
     const res = await logIn(
       formdata.get("user")?.toString() ?? "",
       formdata.get("pass")?.toString() ?? "",
     );
+
+    console.log(res);
 
     if (res === false) return redirect("?err");
 
@@ -39,12 +42,15 @@ export default function LoginView() {
     });
   });
 
+  const [getUser, setUser] = createSignal("")
+  const [getPass, setPass] = createSignal("")
+
   return (
     <div class="is-max-desktop container">
       <div class="card">
         <div class="card-header">
           <div class="card-header-title">
-            Administratora pierakstīšanās
+            Pierakstīšanās
           </div>
         </div>
         <div class="card-content">
@@ -63,8 +69,12 @@ export default function LoginView() {
               )
               : (
                 <>
-                  <button>Admin lietotājs</button>
-                  <button>Parasts lietotājs</button>
+                <div class="field is-grouped is-grouped-centered">
+                      <p class="control">
+                        <button class="button is-small" onClick={() => {setUser("Admin");setPass("qwertyuiopasdf")}}>Admin lietotājs</button>
+                        <button class="button is-small" onClick={() => {setUser("Edgars"); setPass("1234567890")}}>Parasts lietotājs</button>
+                      </p>
+                    </div>
                   <Form>
                     <div class="field">
                       <div class="control has-icons-left has-icons-right">
@@ -73,6 +83,7 @@ export default function LoginView() {
                           type="text"
                           name="user"
                           placeholder="Lietotājvārds"
+                          value={getUser()}
                         />
                         <span class="icon is-small is-left">
                           <i class="bi bi-person-badge-fill"></i>
@@ -86,6 +97,7 @@ export default function LoginView() {
                           type="password"
                           name="pass"
                           placeholder="Parole"
+                          value={getPass()}
                         />
                         <span class="icon is-small is-left">
                           <i class="bi bi-key-fill"></i>

@@ -71,15 +71,15 @@ export default function Navigation() {
                         <A
                           href={getLoginResource()?.isAdmin
                             ? "/auth/admin"
-                            : "/TODO/user"}
+                            : "/auth/user"}
                           class="button"
                         >
-                          {getLoginResource()?.isAdmin && (
+                          {getLoginResource()?.isAdmin ? (
                             <>
                               <i class="bi bi-wrench-adjustable"></i>&nbsp;
                             </>
-                          )}
-                          {getLoginResource()?.username ?? "Ienākt"}
+                          ) : ""}
+                          {getLoginResource()?.username}
                         </A>
                         <a class="button is-danger" href={logOut[1].url}>
                           <i class="bi bi-box-arrow-left"></i>

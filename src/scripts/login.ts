@@ -20,6 +20,9 @@ export async function logIn(user: string, pass:string): Promise<Users|false> {
         .from("users")
         .where({username: user, password: await hashPassword(pass)})
 
+    console.log(res);
+    
+
     if(res.length == 0) return false
 
     return res[0]
