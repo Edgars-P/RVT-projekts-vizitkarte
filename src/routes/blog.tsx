@@ -46,7 +46,7 @@ export default function Blog() {
 
 					<div class="card block">
 						<div class="card-header">
-							<div class="card-header-title">
+							<div class="card-header-title has-background-primary-light">
 								{blog.title}
 							</div>
 						</div>

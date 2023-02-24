@@ -19,7 +19,7 @@ export default function Contact() {
     <div class="is-max-desktop container">
       <div class="card">
         <div class="card-header">
-          <div class="card-header-title">
+          <div class="card-header-title has-background-primary-light">
           Sazinies ar mani!
           </div>
         </div>

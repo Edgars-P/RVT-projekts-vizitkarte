@@ -18,9 +18,8 @@ export default function Home() {
 
     <div class="is-max-desktop container">
       <div class="card">
-        <i class="bi bi-arrow-repeat flipbtn" onclick={flipCard}></i>
         <div class="card-header">
-          <div class="card-header-title">
+          <div class="card-header-title has-background-primary-light">
             Mana vizītkarte
           </div>
         </div>
@@ -54,7 +53,7 @@ export default function Home() {
 
 
         <div class="card-header">
-          <div class="card-header-title">
+          <div class="card-header-title has-background-primary-light">
             Linki
           </div>
         </div>

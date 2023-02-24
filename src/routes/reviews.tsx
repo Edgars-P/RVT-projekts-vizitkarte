@@ -29,7 +29,7 @@ export default function Feedback() {
     <div class="is-max-desktop container">
       <div class="card">
         <div class="card-header">
-          <div class="card-header-title">
+          <div class="card-header-title has-background-primary-light">
             Rakstīt atsauksmi
           </div>
         </div>
@@ -59,7 +59,7 @@ export default function Feedback() {
           </Form>
         </div>
         <div class="card-header">
-          <div class="card-header-title">
+          <div class="card-header-title has-background-primary-light">
             Citu atsakuksmes
           </div>
         </div>

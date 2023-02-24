@@ -1,27 +1,20 @@
-import { Suspense } from "solid-js";
-import {
-  createCookie,
-  createRouteData,
-  useNavigate,
-  useRouteData,
-} from "solid-start";
-import {
-  createServerAction$,
-  createServerData$,
-  redirect,
-} from "solid-start/server";
-import { isLoggedIn, logIn } from "~/scripts/login";
+import { Suspense, } from "solid-js"
+import { createCookie, createRouteData, useNavigate, useRouteData } from "solid-start"
+import { createServerAction$, createServerData$, redirect } from "solid-start/server"
+import { getLogin, logIn } from "~/scripts/login"
+
 
 export function routeData() {
-  return createServerData$(async (_, f) => {
-    return isLoggedIn(f.request);
-  });
+	return createServerData$(async (_, f) => {
+		return getLogin(f.request)
+	})
 }
 
 export default function LoginView() {
   const isLoggedInResource = useRouteData<typeof routeData>();
 
   const navigate = useNavigate();
+	const getLoginResource = useRouteData<typeof routeData>()
 
   const [_, { Form }] = createServerAction$(async (formdata: FormData) => {
     const res = await logIn(
