@@ -3,7 +3,7 @@ export default function AdminView() {
     return (
         <div class="card">
             <div class="card-header">
-                <div class="card-header-title">
+                <div class="card-header-title has-background-primary-light">
                     Administratora panelis
                 </div>
             </div>

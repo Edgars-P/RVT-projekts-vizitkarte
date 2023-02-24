@@ -31,7 +31,7 @@ export default function LoginView() {
 		<div class="is-max-desktop container">
 			<div class="card">
 				<div class="card-header">
-					<div class="card-header-title">
+					<div class="card-header-title has-background-primary-light">
 						Administratora pierakstīšanās
 					</div>
 				</div>

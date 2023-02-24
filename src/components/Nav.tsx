@@ -1,10 +1,25 @@
-import { A, useLocation } from "solid-start";
-import { createServerAction$, redirect } from "solid-start/server";
+import { Suspense } from "solid-js";
+import { A, useLocation, useRouteData } from "solid-start";
+import { createServerAction$, createServerData$, redirect } from "solid-start/server";
 import { knexInstance, Reviews } from "~/scripts/database";
+import { isLoggedIn } from "~/scripts/login";
 
 export default function Navigation() {
 
   const location = useLocation();
+
+  const isLoggedInResource = createServerData$(async (_, f) => {
+    return await isLoggedIn(f.request)
+  })
+
+  const logOut = createServerAction$(async (_, b) => {
+    return redirect("/",
+      { headers: { "Set-Cookie": `secret=0; SameSite=Strict; HttpOnly; Path=/` } }
+    )
+  })  
+
+  console.log(isLoggedInResource);
+
 
   const navEntries = [
     { href: "/", name: "Vizītkarte" },
@@ -41,8 +56,13 @@ export default function Navigation() {
             <div class="navbar-item">
               <div class="buttons">
                 <A href="/admin/dash" class="button">
-                  Admin
+                  <Suspense fallback="Admin">
+                    {isLoggedInResource()?.username ?? "Admin"}
+                  </Suspense>
                 </A>
+                <Suspense>
+                  {isLoggedInResource() && (<a class="button is-danger" href={logOut[1].url}><i class="bi bi-box-arrow-left"></i></a>)}
+                </Suspense>
               </div>
             </div>
           </div>
