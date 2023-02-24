@@ -16,7 +16,7 @@ export default function Navigation() {
     return redirect("/",
       { headers: { "Set-Cookie": `secret=0; SameSite=Strict; HttpOnly; Path=/` } }
     )
-  })  
+  })
 
   console.log(getLoginResource);
 
@@ -55,14 +55,11 @@ export default function Navigation() {
           <div class="navbar-end">
             <div class="navbar-item">
               <div class="buttons">
-                <A href="/admin/dash" class="button">
-                  <Suspense fallback="Ienākt">
-                    {getLoginResource()?.isAdmin && <i class="bi bi-wrench-adjustable"></i>}
-                    &nbsp;
-                    {getLoginResource()?.username ?? "Ienākt"}
-                  </Suspense>
-                </A>
                 <Suspense>
+                  <A href={getLoginResource()?.isAdmin ? "/admin/dash" : "/TODO/user"} class="button">
+                    {getLoginResource()?.isAdmin && <><i class="bi bi-wrench-adjustable"></i>&nbsp;</>}
+                    {getLoginResource()?.username ?? "Ienākt"}
+                  </A>
                   {getLoginResource() && (<a class="button is-danger" href={logOut[1].url}><i class="bi bi-box-arrow-left"></i></a>)}
                 </Suspense>
               </div>
