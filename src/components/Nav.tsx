@@ -1,25 +1,25 @@
 import { Suspense } from "solid-js";
 import { A, useLocation, useRouteData } from "solid-start";
-import { createServerAction$, createServerData$, redirect } from "solid-start/server";
+import {
+  createServerAction$,
+  createServerData$,
+  redirect,
+} from "solid-start/server";
 import { knexInstance, Reviews } from "~/scripts/database";
 import { getLogin } from "~/scripts/login";
 
 export default function Navigation() {
-
   const location = useLocation();
 
   const getLoginResource = createServerData$(async (_, f) => {
-    return await getLogin(f.request)
-  })
+    return await getLogin(f.request);
+  });
 
   const logOut = createServerAction$(async (_, b) => {
-    return redirect("/",
-      { headers: { "Set-Cookie": `secret=0; SameSite=Strict; HttpOnly; Path=/` } }
-    )
-  })
-
-  console.log(getLoginResource);
-
+    return redirect("/", {
+      headers: { "Set-Cookie": `secret=0; SameSite=Strict; HttpOnly; Path=/` },
+    });
+  });
 
   const navEntries = [
     { href: "/", name: "Vizītkarte" },
@@ -27,7 +27,7 @@ export default function Navigation() {
     { href: "/reviews", name: "Atsauksmes" },
     { href: "/contact", name: "Kontakti" },
     { href: "/blog", name: "Blogs" },
-  ]
+  ];
 
   return (
     <div class="container">
@@ -37,7 +37,13 @@ export default function Navigation() {
             <i class="bi bi-house is-size-3"></i>
           </a>
 
-          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <a
+            role="button"
+            class="navbar-burger"
+            aria-label="menu"
+            aria-expanded="false"
+            data-target="navbarBasicExample"
+          >
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -45,22 +51,42 @@ export default function Navigation() {
         </div>
         <div class="navbar-menu">
           <div class="navbar-start">
-            {navEntries.map(e => (
+            {navEntries.map((e) => (
               <A
                 href={e.href}
-                class={"navbar-item " + (location.pathname == e.href ? "is-active" : "")}
-              >{e.name}</A>
+                class={"navbar-item " +
+                  (location.pathname == e.href ? "is-active" : "")}
+              >
+                {e.name}
+              </A>
             ))}
           </div>
           <div class="navbar-end">
             <div class="navbar-item">
               <div class="buttons">
                 <Suspense>
-                  <A href={getLoginResource()?.isAdmin ? "/admin/dash" : "/TODO/user"} class="button">
-                    {getLoginResource()?.isAdmin && <><i class="bi bi-wrench-adjustable"></i>&nbsp;</>}
-                    {getLoginResource()?.username ?? "Ienākt"}
-                  </A>
-                  {getLoginResource() && (<a class="button is-danger" href={logOut[1].url}><i class="bi bi-box-arrow-left"></i></a>)}
+                  {getLoginResource()
+                    ? (
+                      <>
+                        <A
+                          href={getLoginResource()?.isAdmin
+                            ? "/auth/admin"
+                            : "/TODO/user"}
+                          class="button"
+                        >
+                          {getLoginResource()?.isAdmin && (
+                            <>
+                              <i class="bi bi-wrench-adjustable"></i>&nbsp;
+                            </>
+                          )}
+                          {getLoginResource()?.username ?? "Ienākt"}
+                        </A>
+                        <a class="button is-danger" href={logOut[1].url}>
+                          <i class="bi bi-box-arrow-left"></i>
+                        </a>
+                      </>
+                    )
+                    : <A href="/auth/login" class="button">Ienākt</A>}
                 </Suspense>
               </div>
             </div>
@@ -68,5 +94,5 @@ export default function Navigation() {
         </div>
       </nav>
     </div>
-  )
+  );
 }

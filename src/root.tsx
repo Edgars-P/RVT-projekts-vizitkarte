@@ -22,14 +22,19 @@ import { routeData } from "./root.data";
 import "bulma";
 
 export default function Root() {
-
   return (
     <Html lang="en">
       <Head>
         <Meta charset="utf-8" />
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
+        />
 
         <Title>Blogs - Edgara Polis</Title>
       </Head>
@@ -37,9 +42,13 @@ export default function Root() {
         <Navigation />
         <Suspense>
           <ErrorBoundary>
-            <Routes>
-                <FileRoutes />
-            </Routes>
+            <div class="is-max-desktop container">
+              <div class="card">
+                <Routes>
+                  <FileRoutes />
+                </Routes>
+              </div>
+            </div>
           </ErrorBoundary>
         </Suspense>
         <Scripts />

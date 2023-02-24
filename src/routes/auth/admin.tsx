@@ -6,7 +6,7 @@ import { getLogin } from "~/scripts/login";
 
 export function routeData() {
     return createServerData$(async (_, f) => {
-        return getLogin(f.request)
+        return await getLogin(f.request)
     })
 }
 
@@ -21,12 +21,12 @@ export default function UsersLayout() {
     return (
         <div class="is-max-desktop container">
             <Suspense>
-                {getLoginResource() ? (
+                {(getLoginResource()?.isAdmin) ? (
                     <Outlet />
                 ) : (
                     <div class="card box">
-                        <h1>Lūdzams autentificēties lai piekļūtu šim resursam!</h1>
-                        <button class="button" onClick={()=>navigate("/admin/login", {replace: true})}>Uz pierakstīšanās lapu</button>
+                        <h1>Pieeja nav atļauta!</h1>
+                        <button class="button" onClick={()=>navigate("/auth/login", {replace: true})}>Uz pierakstīšanās lapu</button>
                     </div>
                 )}
             </Suspense>
