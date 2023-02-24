@@ -20,10 +20,11 @@ export interface Reviews {
     review: string
 }
 
-export interface Admins {
+export interface Users {
     username: string,
     password: string,
-    secret: string
+    secret: string,
+    isAdmin: boolean
 }
 
 const config: Knex.Config = {
@@ -72,15 +73,17 @@ await knexInstance
 
 await knexInstance
     .schema
-    .createTable("admins", t => {
+    .createTable("users", t => {
         t.string("username")
         t.string("password")
         t.string("secret")
+        t.boolean("isAdmin")
     })
 
-await knexInstance<Admins>("admins")
+await knexInstance<Users>("users")
     .insert({
         username: "Edgars",
         password: await hashPassword("1234567890"),
-        secret: Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString("hex")
+        secret: Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString("hex"),
+        isAdmin: true
     })

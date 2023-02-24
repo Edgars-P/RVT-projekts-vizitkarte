@@ -1,13 +1,13 @@
 import { parseCookie } from "solid-start";
-import { Admins, knexInstance } from "./database";
+import { Users, knexInstance } from "./database";
 
 
-export async function isLoggedIn(r: Request) {
+export async function getLogin(r: Request): Promise<Users> {
     const cookies = parseCookie(r.headers.get("Cookie") ?? "")
 
-    const res = await knexInstance<Admins>("admins")
+    const res = await knexInstance<Users>("users")
         .select("*")
-        .from("admins")
+        .from("users")
         .where({secret: cookies["secret"]??"aaa"})
 
     console.log(res);
@@ -21,9 +21,9 @@ export async function logIn(user: string, pass:string): Promise<string|false> {
     console.log(user, pass, hashPassword(pass));
     
 
-    const res = await knexInstance<Admins>("admins")
+    const res = await knexInstance<Users>("users")
         .select("*")
-        .from("admins")
+        .from("users")
         .where({username: user, password: await hashPassword(pass)})
 
     console.log(res);

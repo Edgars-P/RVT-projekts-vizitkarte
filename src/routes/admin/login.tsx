@@ -1,18 +1,18 @@
 import { Suspense, } from "solid-js"
 import { createCookie, createRouteData, useNavigate, useRouteData } from "solid-start"
 import { createServerAction$, createServerData$, redirect } from "solid-start/server"
-import { isLoggedIn, logIn } from "~/scripts/login"
+import { getLogin, logIn } from "~/scripts/login"
 
 
 export function routeData() {
 	return createServerData$(async (_, f) => {
-		return isLoggedIn(f.request)
+		return getLogin(f.request)
 	})
 }
 
 export default function LoginView() {
 
-	const isLoggedInResource = useRouteData<typeof routeData>()
+	const getLoginResource = useRouteData<typeof routeData>()
 
 	const navigate = useNavigate()
 
@@ -37,7 +37,7 @@ export default function LoginView() {
 				</div>
 				<div class="card-content">
 					<Suspense fallback={(<p>Ielādē...</p>)}>
-						{isLoggedInResource() ? (
+						{getLoginResource() ? (
 							<>
 								<h1>Tu esi pierakstījies!</h1>
 								<button class="button" onClick={() => navigate("/admin/dash", { replace: true })}>

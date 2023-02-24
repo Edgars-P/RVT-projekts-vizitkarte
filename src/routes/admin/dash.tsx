@@ -1,18 +1,18 @@
 import { Suspense } from "solid-js";
 import { createRouteData, Outlet, useNavigate, useRouteData } from "solid-start";
 import { createServerData$ } from "solid-start/server";
-import { isLoggedIn } from "~/scripts/login";
+import { getLogin } from "~/scripts/login";
 
 
 export function routeData() {
     return createServerData$(async (_, f) => {
-        return isLoggedIn(f.request)
+        return getLogin(f.request)
     })
 }
 
 export default function UsersLayout() {
 
-    const isLoggedInResource = useRouteData<typeof routeData>()
+    const getLoginResource = useRouteData<typeof routeData>()
 
     const navigate = useNavigate()
 
@@ -21,7 +21,7 @@ export default function UsersLayout() {
     return (
         <div class="is-max-desktop container">
             <Suspense>
-                {isLoggedInResource() ? (
+                {getLoginResource() ? (
                     <Outlet />
                 ) : (
                     <div class="card box">

@@ -2,14 +2,14 @@ import { Suspense } from "solid-js";
 import { A, useLocation, useRouteData } from "solid-start";
 import { createServerAction$, createServerData$, redirect } from "solid-start/server";
 import { knexInstance, Reviews } from "~/scripts/database";
-import { isLoggedIn } from "~/scripts/login";
+import { getLogin } from "~/scripts/login";
 
 export default function Navigation() {
 
   const location = useLocation();
 
-  const isLoggedInResource = createServerData$(async (_, f) => {
-    return await isLoggedIn(f.request)
+  const getLoginResource = createServerData$(async (_, f) => {
+    return await getLogin(f.request)
   })
 
   const logOut = createServerAction$(async (_, b) => {
@@ -18,7 +18,7 @@ export default function Navigation() {
     )
   })  
 
-  console.log(isLoggedInResource);
+  console.log(getLoginResource);
 
 
   const navEntries = [
@@ -56,12 +56,14 @@ export default function Navigation() {
             <div class="navbar-item">
               <div class="buttons">
                 <A href="/admin/dash" class="button">
-                  <Suspense fallback="Admin">
-                    {isLoggedInResource()?.username ?? "Admin"}
+                  <Suspense fallback="Ienākt">
+                    {getLoginResource()?.isAdmin && <i class="bi bi-wrench-adjustable"></i>}
+                    &nbsp;
+                    {getLoginResource()?.username ?? "Ienākt"}
                   </Suspense>
                 </A>
                 <Suspense>
-                  {isLoggedInResource() && (<a class="button is-danger" href={logOut[1].url}><i class="bi bi-box-arrow-left"></i></a>)}
+                  {getLoginResource() && (<a class="button is-danger" href={logOut[1].url}><i class="bi bi-box-arrow-left"></i></a>)}
                 </Suspense>
               </div>
             </div>
