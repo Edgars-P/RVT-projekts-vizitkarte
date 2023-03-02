@@ -85,5 +85,13 @@ await knexInstance<Users>("users")
         username: "Edgars",
         password: await hashPassword("1234567890"),
         secret: Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString("hex"),
+        isAdmin: false
+    })
+
+await knexInstance<Users>("users")
+    .insert({
+        username: "Admin",
+        password: await hashPassword("qwertyuiopasdf"),
+        secret: Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString("hex"),
         isAdmin: true
     })

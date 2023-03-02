@@ -8,18 +8,12 @@ export async function getLogin(r: Request): Promise<Users> {
     const res = await knexInstance<Users>("users")
         .select("*")
         .from("users")
-        .where({secret: cookies["secret"]??"aaa"})
-
-    console.log(res);
-    
+        .where({secret: cookies["secret"]??"aaa"})   
 
     return res[0]
 }
 
-export async function logIn(user: string, pass:string): Promise<string|false> {
-
-    console.log(user, pass, hashPassword(pass));
-    
+export async function logIn(user: string, pass:string): Promise<Users|false> {    
 
     const res = await knexInstance<Users>("users")
         .select("*")
@@ -27,10 +21,11 @@ export async function logIn(user: string, pass:string): Promise<string|false> {
         .where({username: user, password: await hashPassword(pass)})
 
     console.log(res);
+    
 
     if(res.length == 0) return false
 
-    return res[0].secret
+    return res[0]
 }
 
 const passwordSeed = Buffer.from(crypto.getRandomValues(new Uint8Array(32))).toString("hex")
