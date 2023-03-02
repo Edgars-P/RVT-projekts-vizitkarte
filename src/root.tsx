@@ -35,6 +35,7 @@ export default function Root() {
       </Head>
       <Body>
         <Navigation />
+        <br />
         <Suspense>
           <ErrorBoundary>
             <Routes>
@@ -43,6 +44,8 @@ export default function Root() {
           </ErrorBoundary>
         </Suspense>
         <Scripts />
+        <br />
+        <br />
       </Body>
     </Html>
   );

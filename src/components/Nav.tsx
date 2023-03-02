@@ -22,11 +22,11 @@ export default function Navigation() {
 
 
   const navEntries = [
-    { href: "/", name: "Vizītkarte" },
+    { href: "/", name: "Sākums" },
     { href: "/me", name: "Par mani" },
+    { href: "/blog", name: "Blogs" },
     { href: "/reviews", name: "Atsauksmes" },
     { href: "/contact", name: "Kontakti" },
-    { href: "/blog", name: "Blogs" },
   ]
 
   return (

@@ -16,43 +16,105 @@ export default function Contact() {
   })
 
   return (
-    <div class="is-max-desktop container">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-header-title has-background-primary-light">
-          Sazinies ar mani!
+    <>
+      <div class="is-max-desktop container">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-title has-background-primary-light">
+              Mana vizītkarte
+            </div>
+          </div>
+          <div class="card-content">
+
+            <ul class="contacts">
+              <li>
+                <span class="heading">Vārds:</span>
+                <span class="contentwrap">
+                  <span class="content">Edgars Polis</span>
+                </span>
+              </li>
+              <li>
+                <span class="heading">Tālrunis:</span>
+                <span class="contentwrap">
+                  <span class="content">
+                    <a href="tel:+371 999 999 99">+371 999 999 99</a>
+                  </span>
+                </span>
+              </li>
+              <li>
+                <span class="heading">E-pasts:</span>
+                <span class="contentwrap">
+                  <span class="content">
+                    <a href="mailto:edgars@example.lv">edgars@example.lv</a>
+                  </span>
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card-header">
+            <div class="card-header-title has-background-primary-light">
+              Linki
+            </div>
+          </div>
+
+          <div class="card-content">
+
+
+            <ul class="links">
+              <li>
+                Twitter
+              </li>
+              <li>
+                LinkedIn
+              </li>
+              <li>
+                GitHub
+              </li>
+            </ul>
           </div>
         </div>
-        <div class="card-content">
-
-          <Form action="" method="post">
-            <div class="field">
-              <label class="label" for="name">Vārds</label>
-              <div class="control">
-                <input class="input" type="text" name="name" id="name" required />
-              </div>
-            </div>
-            <div class="field">
-              <label class="label" for="surname">Uzvārds</label>
-              <div class="control">
-                <input class="input" type="text" name="surname" id="surname" required />
-              </div>
-            </div>
-            <div class="field">
-              <label class="label" for="email">E-pasts</label>
-              <div class="control">
-                <input class="input" type="text" name="email" id="email" required />
-              </div>
-            </div>
-            <div class="field is-grouped is-grouped-centered">
-              <p class="control">
-                <button class="button is-primary">Iesniegt</button>
-              </p>
-            </div>
-          </Form>
-        </div>
-
       </div>
-    </div>
+      <br />
+      <div class="is-max-desktop container">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-title has-background-primary-light">
+              Sazinies ar mani!
+            </div>
+          </div>
+          <div class="card-content">
+
+            <Form action="" method="post">
+              <div class="field">
+                <label class="label" for="name">Vārds</label>
+                <div class="control">
+                  <input class="input" type="text" name="name" id="name" required />
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="surname">Uzvārds</label>
+                <div class="control">
+                  <input class="input" type="text" name="surname" id="surname" required />
+                </div>
+              </div>
+              <div class="field">
+                <label class="label" for="email">E-pasts</label>
+                <div class="control">
+                  <input class="input" type="text" name="email" id="email" required />
+                </div>
+              </div>
+              <div class="field is-grouped is-grouped-centered">
+                <p class="control">
+                  <button class="button is-primary">Iesniegt</button>
+                </p>
+              </div>
+            </Form>
+          </div>
+
+        </div>
+      </div>
+    </>
+
   );
 }
