@@ -1,3 +1,4 @@
+import { Faker, faker } from "@faker-js/faker"
 import knex, { Knex } from "knex"
 import { hashPassword } from "./login"
 
@@ -46,12 +47,17 @@ await knexInstance
         t.date("date")
     })
 
-await knexInstance<Blogs>("blogs")
-    .insert({
-        name: "Testa ieraksts 1",
-        content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim sapientiam, temperantiam, fortitudinem copulatas esse docui cum voluptate, ut ab Homero Ennius, Afranius a Menandro solet. Nec vero, ut noster Lucilius, recusabo, quo minus id, quod quaeritur, sit pulcherrimum. Etenim si delectamur.`,
-        date: Date.now()
-    })
+Array(10).fill("").map((_, i) => {
+    return {
+        id: i+1,
+        name: faker.lorem.sentence(4),
+        content: "<p>"+faker.lorem.paragraphs(5, "</p><p>")+"</p>",
+        date: faker.date.past(1)
+    }
+}).forEach(async e => {
+    await knexInstance<Blogs>("blogs")
+    .insert(e)
+})
 
 await knexInstance
     .schema

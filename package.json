@@ -7,7 +7,7 @@
   },
   "type": "module",
   "devDependencies": {
-    "@types/node": "^18.14.4",
+    "@types/node": "^18.14.5",
     "esbuild": "^0.17.10",
     "postcss": "^8.4.21",
     "solid-start-node": "^0.2.22",
@@ -15,6 +15,7 @@
     "vite": "^4.1.4"
   },
   "dependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@solidjs/meta": "^0.28.2",
     "@solidjs/router": "^0.7.0",
     "bulma": "^0.9.4",
