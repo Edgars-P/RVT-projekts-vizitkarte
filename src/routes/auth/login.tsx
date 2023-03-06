@@ -1,3 +1,4 @@
+import { A } from "@solidjs/router";
 import { createSignal, Suspense } from "solid-js";
 import {
   createCookie,
@@ -25,7 +26,6 @@ export default function LoginView() {
   const getLoginResource = useRouteData<typeof routeData>();
 
   const [_, { Form }] = createServerAction$(async (formdata: FormData) => {
-    
     const res = await logIn(
       formdata.get("user")?.toString() ?? "",
       formdata.get("pass")?.toString() ?? "",
@@ -42,8 +42,8 @@ export default function LoginView() {
     });
   });
 
-  const [getUser, setUser] = createSignal("")
-  const [getPass, setPass] = createSignal("")
+  const [getUser, setUser] = createSignal("");
+  const [getPass, setPass] = createSignal("");
 
   return (
     <div class="is-max-desktop container">
@@ -69,12 +69,30 @@ export default function LoginView() {
               )
               : (
                 <>
-                <div class="field is-grouped is-grouped-centered">
-                      <p class="control">
-                        <button class="button is-small" onClick={() => {setUser("Admin");setPass("qwertyuiopasdf")}}>Admin lietotājs</button>
-                        <button class="button is-small" onClick={() => {setUser("Edgars"); setPass("1234567890")}}>Parasts lietotājs</button>
-                      </p>
-                    </div>
+                  <div class="field is-grouped is-grouped-centered">
+                    <p class="control level">
+                      DEV konti testēšanai:
+                      &nbsp;
+                      <button
+                        class="button is-small"
+                        onClick={() => {
+                          setUser("Admin");
+                          setPass("qwertyuiopasdf");
+                        }}
+                      >
+                        Admin lietotājs
+                      </button>
+                      <button
+                        class="button is-small"
+                        onClick={() => {
+                          setUser("Edgars");
+                          setPass("1234567890");
+                        }}
+                      >
+                        Parasts lietotājs
+                      </button>
+                    </p>
+                  </div>
                   <Form>
                     <div class="field">
                       <div class="control has-icons-left has-icons-right">
@@ -111,6 +129,7 @@ export default function LoginView() {
                         </button>
                       </p>
                     </div>
+                    <p class="has-text-centered">Jauns lietotājs? <A href="/auth/register">Reģistrēties</A></p>
                   </Form>
                 </>
               )}

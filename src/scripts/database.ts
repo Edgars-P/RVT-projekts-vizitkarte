@@ -22,6 +22,7 @@ export interface Reviews {
 }
 
 export interface Users {
+    name: string,
     username: string,
     password: string,
     secret: string,
@@ -80,7 +81,8 @@ await knexInstance
 await knexInstance
     .schema
     .createTable("users", t => {
-        t.string("username")
+        t.string("name")
+        t.string("username").primary()
         t.string("password")
         t.string("secret")
         t.boolean("isAdmin")
@@ -88,6 +90,7 @@ await knexInstance
 
 await knexInstance<Users>("users")
     .insert({
+        name: "Edgars Polis",
         username: "Edgars",
         password: await hashPassword("1234567890"),
         secret: Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString("hex"),
@@ -96,6 +99,7 @@ await knexInstance<Users>("users")
 
 await knexInstance<Users>("users")
     .insert({
+        name: "Admin Edgars",
         username: "Admin",
         password: await hashPassword("qwertyuiopasdf"),
         secret: Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString("hex"),
