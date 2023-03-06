@@ -42,7 +42,7 @@ const blogData = [
 
 export function routeData() {
   return createServerData$(
-    () => knexInstance<Blogs>("blogs").select("*").orderBy("date"),
+    () => knexInstance<Blogs>("blogs").select("*").orderBy("date", "desc"),
     { key: "blogs" },
   );
 }

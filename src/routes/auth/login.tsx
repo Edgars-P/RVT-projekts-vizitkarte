@@ -1,5 +1,5 @@
 import { A } from "@solidjs/router";
-import { createSignal, Suspense } from "solid-js";
+import { createSignal, Show, Suspense } from "solid-js";
 import {
   createCookie,
   createRouteData,
@@ -25,22 +25,27 @@ export default function LoginView() {
   const navigate = useNavigate();
   const getLoginResource = useRouteData<typeof routeData>();
 
-  const [_, { Form }] = createServerAction$(async (formdata: FormData) => {
-    const res = await logIn(
-      formdata.get("user")?.toString() ?? "",
-      formdata.get("pass")?.toString() ?? "",
-    );
+  const [loginaction, { Form }] = createServerAction$(
+    async (formdata: FormData) => {
+      const res = await logIn(
+        formdata.get("user")?.toString() ?? "",
+        formdata.get("pass")?.toString() ?? "",
+      );
 
-    console.log(res);
+      console.log(res);
 
-    if (res === false) return redirect("?err");
+      if (res === false) {
+        throw new Error("Lietotājvārds vai parole nav pareiza!");
+      }
 
-    return redirect(res.isAdmin ? "/auth/admin/" : "/auth/user/", {
-      headers: {
-        "Set-Cookie": `secret=${res.secret}; SameSite=Strict; HttpOnly; Path=/`,
-      },
-    });
-  });
+      return redirect(res.isAdmin ? "/auth/admin/" : "/auth/user/", {
+        headers: {
+          "Set-Cookie":
+            `secret=${res.secret}; SameSite=Strict; HttpOnly; Path=/`,
+        },
+      });
+    },
+  );
 
   const [getUser, setUser] = createSignal("");
   const [getPass, setPass] = createSignal("");
@@ -71,8 +76,7 @@ export default function LoginView() {
                 <>
                   <div class="field is-grouped is-grouped-centered">
                     <p class="control level">
-                      DEV konti testēšanai:
-                      &nbsp;
+                      DEV konti testēšanai: &nbsp;
                       <button
                         class="button is-small"
                         onClick={() => {
@@ -94,6 +98,12 @@ export default function LoginView() {
                     </p>
                   </div>
                   <Form>
+                    <Show when={loginaction.error}>
+                      <div class="notification is-danger is-light">
+                        Pierakstīšanās kļūda: <br />
+                        {loginaction.error.message}
+                      </div>
+                    </Show>
                     <div class="field">
                       <div class="control has-icons-left has-icons-right">
                         <input
@@ -124,12 +134,14 @@ export default function LoginView() {
                     </div>
                     <div class="field is-grouped is-grouped-centered">
                       <p class="control">
-                        <button class="button is-success">
+                        <button class="button is-success" disabled={loginaction.pending}>
                           Ienākt
                         </button>
                       </p>
                     </div>
-                    <p class="has-text-centered">Jauns lietotājs? <A href="/auth/register">Reģistrēties</A></p>
+                    <p class="has-text-centered">
+                      Jauns lietotājs? <A href="/auth/register">Reģistrēties</A>
+                    </p>
                   </Form>
                 </>
               )}

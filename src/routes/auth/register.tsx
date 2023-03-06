@@ -32,6 +32,8 @@ export default function Register() {
       if (res === "ERROR") {
         throw new Error("Nepareizi dati vai lietotājs jau pastāv!");
       }
+
+      return redirect("/auth/register")
     },
   );
 
