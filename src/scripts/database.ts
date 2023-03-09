@@ -28,12 +28,17 @@ export interface Comment {
   id: number;
   author: string;
   content: string;
+  article: number;
+  date: any;
 }
 await knexInstance.schema.createTable("comments", (t) => {
   t.increments("id", { primaryKey: true });
   t.string("author");
   t.foreign("author").references("username").inTable("users");
+  t.integer("article");
+  t.foreign("article").references("id").inTable("blogs");
   t.string("content");
+  t.date("date");
 });
 
 Array(10)
