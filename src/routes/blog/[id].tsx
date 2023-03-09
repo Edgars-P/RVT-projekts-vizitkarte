@@ -1,4 +1,4 @@
-import { For, Show, Suspense } from "solid-js";
+import { createEffect, For, Show, Suspense } from "solid-js";
 import { A, RouteDataArgs, useParams, useRouteData } from "solid-start";
 import { createServerAction$, createServerData$ } from "solid-start/server";
 import { Blogs, Comment, knexInstance } from "~/scripts/database";
@@ -75,7 +75,9 @@ export default function Blog() {
             when={isLoggedIn()}
             fallback={<p>Lūdzu ienākt vai reģistrēties lai konemtētu!</p>}
           >
-            <CommentForm>
+            <CommentForm
+              onSubmit={(e) => (e.target as HTMLFormElement).reset()}
+            >
               <div class="field">
                 <textarea name="content" class="textarea"></textarea>
               </div>
