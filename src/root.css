@@ -3,17 +3,16 @@
 @import "https://cdn.jsdelivr.net/npm/@fontsource/cairo@4/700.css";
 
 :root {
-  --secondary: #C8E6C9;
-  --primary: #81C784;
-  --background: #E8F5E9;
-  --accent: #2E7D32;
+	--secondary: #c8e6c9;
+	--primary: #81c784;
+	--background: #e8f5e9;
+	--accent: #2e7d32;
 
-  --nav-height: 3rem;
+	--nav-height: 3rem;
 }
 
-
 .card {
-  max-width: 40rem!important;
-  margin-left: auto;
-  margin-right: auto;
+	max-width: 40rem !important;
+	margin-left: auto;
+	margin-right: auto;
 }

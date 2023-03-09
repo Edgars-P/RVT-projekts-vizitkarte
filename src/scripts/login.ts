@@ -14,7 +14,7 @@ export async function getLogin(r: Request): Promise<Users> {
 
 export async function logIn(
 	user: string,
-	pass: string,
+	pass: string
 ): Promise<Users | false> {
 	const res = await knexInstance<Users>("users")
 		.select("*")
@@ -28,17 +28,17 @@ export async function logIn(
 	return res[0];
 }
 
-export async function register(userObj: Users): Promise<number[]|"ERROR"> {
+export async function register(userObj: Users): Promise<number[] | "ERROR"> {
 	try {
-		const res = await knexInstance<Users>("users")
-			.insert({
-				name: userObj.name,
-				username: userObj.username,
-				password: await hashPassword(userObj.password),
-				secret: Buffer.from(crypto.getRandomValues(new Uint8Array(16)))
-					.toString("hex"),
-				isAdmin: false,
-			})
+		const res = await knexInstance<Users>("users").insert({
+			name: userObj.name,
+			username: userObj.username,
+			password: await hashPassword(userObj.password),
+			secret: Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString(
+				"hex"
+			),
+			isAdmin: false,
+		});
 		console.log(typeof res);
 
 		return res;
@@ -47,13 +47,14 @@ export async function register(userObj: Users): Promise<number[]|"ERROR"> {
 	}
 }
 
-const passwordSeed = Buffer.from(crypto.getRandomValues(new Uint8Array(32)))
-	.toString("hex");
+const passwordSeed = Buffer.from(
+	crypto.getRandomValues(new Uint8Array(32))
+).toString("hex");
 
 export async function hashPassword(password: string): Promise<string> {
 	const hash = await crypto.subtle.digest(
 		"SHA-512",
-		Buffer.from(password + passwordSeed),
+		Buffer.from(password + passwordSeed)
 	);
 	return Buffer.from(new Uint8Array(hash)).toString("hex");
 }

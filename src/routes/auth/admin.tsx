@@ -1,35 +1,43 @@
 import { Suspense } from "solid-js";
-import { createRouteData, Outlet, useNavigate, useRouteData } from "solid-start";
+import {
+	createRouteData,
+	Outlet,
+	useNavigate,
+	useRouteData,
+} from "solid-start";
 import { createServerData$ } from "solid-start/server";
 import { getLogin } from "~/scripts/login";
 
-
 export function routeData() {
-    return createServerData$(async (_, f) => {
-        return await getLogin(f.request)
-    })
+	return createServerData$(async (_, f) => {
+		return await getLogin(f.request);
+	});
 }
 
 export default function UsersLayout() {
+	const getLoginResource = useRouteData<typeof routeData>();
 
-    const getLoginResource = useRouteData<typeof routeData>()
+	const navigate = useNavigate();
 
-    const navigate = useNavigate()
+	// TODO Login and validate
 
-    // TODO Login and validate
-
-    return (
-        <div class="is-max-desktop container">
-            <Suspense>
-                {(getLoginResource()?.isAdmin) ? (
-                    <Outlet />
-                ) : (
-                    <div class="card box">
-                        <h1>Pieeja nav atļauta!</h1>
-                        <button class="button" onClick={()=>navigate("/auth/login", {replace: true})}>Uz pierakstīšanās lapu</button>
-                    </div>
-                )}
-            </Suspense>
-        </div>
-    );
+	return (
+		<div class="is-max-desktop container">
+			<Suspense>
+				{getLoginResource()?.isAdmin ? (
+					<Outlet />
+				) : (
+					<div class="card box">
+						<h1>Pieeja nav atļauta!</h1>
+						<button
+							class="button"
+							onClick={() => navigate("/auth/login", { replace: true })}
+						>
+							Uz pierakstīšanās lapu
+						</button>
+					</div>
+				)}
+			</Suspense>
+		</div>
+	);
 }
