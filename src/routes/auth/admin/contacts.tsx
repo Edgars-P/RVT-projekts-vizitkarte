@@ -20,51 +20,46 @@ export default function AdminView() {
 		{ invalidate: "contacts" }
 	);
 
-	return (
-		<div class="card">
-			<div class="card-header">
-				<div class="card-header-title">Iesniegtie kontakti</div>
-			</div>
-			<div class="card-content">
-				<Suspense fallback={<p>Ielādē...</p>}>
-					<table class="table">
-						<thead>
-							<tr>
-								<th>Vārds</th>
-								<th>Uzvārds</th>
-								<th>E-pasts</th>
-								<th>Darbības</th>
-							</tr>
-						</thead>
-						<tbody>
-							<For each={submittedContacts()} fallback={<p>Iesniegumu nav!</p>}>
-								{(e) => (
-									<tr>
-										<td>{e.name}</td>
-										<td>{e.surname}</td>
-										<td>
-											<a href={"mailto:" + encodeURIComponent(e.email)}>
-												{e.email}
-											</a>
-										</td>
-										<td>
-											<button
-												class="button is-small is-danger"
-												disabled={isDeleting.pending}
-												onClick={() => {
-													doDelete(e.email);
-												}}
-											>
-												Dzēst
-											</button>
-										</td>
-									</tr>
-								)}
-							</For>
-						</tbody>
-					</table>
-				</Suspense>
-			</div>
-		</div>
-	);
+  return (
+    <div class="card-content">
+      <Suspense fallback={<p>Ielādē...</p>}>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Vārds</th>
+              <th>Uzvārds</th>
+              <th>E-pasts</th>
+              <th>Darbības</th>
+            </tr>
+          </thead>
+          <tbody>
+            <For each={submittedContacts()} fallback={<p>Iesniegumu nav!</p>}>
+              {(e) => (
+                <tr>
+                  <td>{e.name}</td>
+                  <td>{e.surname}</td>
+                  <td>
+                    <a href={"mailto:" + encodeURIComponent(e.email)}>
+                      {e.email}
+                    </a>
+                  </td>
+                  <td>
+                    <button
+                      class="button is-small is-danger"
+                      disabled={isDeleting.pending}
+                      onClick={() => {
+                        doDelete(e.email);
+                      }}
+                    >
+                      Dzēst
+                    </button>
+                  </td>
+                </tr>
+              )}
+            </For>
+          </tbody>
+        </table>
+      </Suspense>
+    </div>
+  );
 }
