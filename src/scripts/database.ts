@@ -2,33 +2,6 @@ import { Faker, faker } from "@faker-js/faker"
 import knex, { Knex } from "knex"
 import { hashPassword } from "./login"
 
-export interface Blogs {
-    id: number,
-    name: string,
-    content: string,
-    date: any
-}
-
-export interface Contact {
-    name: string,
-    surname: string,
-    email: string
-}
-
-export interface Reviews {
-    name: string,
-    stars: number,
-    review: string
-}
-
-export interface Users {
-    name: string,
-    username: string,
-    password: string,
-    secret: string,
-    isAdmin: boolean
-}
-
 const config: Knex.Config = {
     client: "sqlite3",
     connection: {
@@ -39,6 +12,12 @@ const config: Knex.Config = {
 export const knexInstance = knex(config);
 
 
+export interface Blogs {
+    id: number,
+    name: string,
+    content: string,
+    date: any
+}
 await knexInstance
     .schema
     .createTable("blogs", t => {
@@ -60,6 +39,12 @@ Array(10).fill("").map((_, i) => {
     .insert(e)
 })
 
+
+export interface Contact {
+    name: string,
+    surname: string,
+    email: string
+}
 await knexInstance
     .schema
     .createTable("contacts", t => {
@@ -69,6 +54,12 @@ await knexInstance
         t.string("email")
     })
 
+
+export interface Reviews {
+    name: string,
+    stars: number,
+    review: string
+}
 await knexInstance
     .schema
     .createTable("reviews", t => {
@@ -78,6 +69,14 @@ await knexInstance
         t.timestamps(false, true)
     })
 
+
+export interface Users {
+    name: string,
+    username: string,
+    password: string,
+    secret: string,
+    isAdmin: boolean
+}
 await knexInstance
     .schema
     .createTable("users", t => {
