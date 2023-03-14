@@ -41,6 +41,8 @@ export default function Blog() {
       const user = await getLogin(request);
       if (!user) throw new Error("Lietotājs neeksistē!");
 
+      console.log(form);
+
       await knexInstance<Comment>("comments").insert({
         article: parseInt(form.get("blog")?.toString() ?? "1"),
         author: user.username,
@@ -75,9 +77,7 @@ export default function Blog() {
             when={isLoggedIn()}
             fallback={<p>Lūdzu ienākt vai reģistrēties lai konemtētu!</p>}
           >
-            <CommentForm
-              onSubmit={(e) => (e.target as HTMLFormElement).reset()}
-            >
+            <CommentForm>
               <div class="field">
                 <textarea name="content" class="textarea"></textarea>
               </div>

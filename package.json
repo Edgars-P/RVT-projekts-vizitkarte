@@ -8,7 +8,7 @@
 	},
 	"type": "module",
 	"devDependencies": {
-		"@types/node": "^18.14.6",
+		"@types/node": "^18.15.0",
 		"esbuild": "^0.17.11",
 		"postcss": "^8.4.21",
 		"solid-start-node": "^0.2.23",
@@ -18,15 +18,15 @@
 	"dependencies": {
 		"@faker-js/faker": "^7.6.0",
 		"@solidjs/meta": "^0.28.2",
-		"@solidjs/router": "^0.7.0",
+		"@solidjs/router": "^0.8.0",
 		"bulma": "^0.9.4",
 		"knex": "^2.4.2",
-		"pg": "^8.9.0",
+		"pg": "^8.10.0",
 		"pg-hstore": "^2.3.4",
 		"prettier": "^2.8.4",
 		"sass": "^1.58.3",
-		"sequelize": "^6.29.0",
-		"solid-js": "^1.6.11",
+		"sequelize": "^6.29.2",
+		"solid-js": "^1.6.13",
 		"solid-start": "^0.2.23",
 		"sqlite3": "^5.1.4",
 		"undici": "^5.20.0"
