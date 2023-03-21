@@ -1,8 +1,8 @@
-import { A } from "@solidjs/router";
-import { For, Suspense } from "solid-js";
-import { useRouteData } from "solid-start";
-import { createServerData$ } from "solid-start/server";
-import { Blogs, knexInstance } from "~/scripts/database";
+import {A} from "@solidjs/router"
+import {For, Suspense} from "solid-js"
+import {useRouteData} from "solid-start"
+import {createServerData$} from "solid-start/server"
+import {Blogs, knexInstance} from "~/scripts/database"
 
 const blogData = [
 	{
@@ -38,23 +38,23 @@ const blogData = [
 		pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
 		culpa qui officia deserunt mollit anim id est laborum.`,
 	},
-];
+]
 
 export function routeData() {
 	return createServerData$(
 		() => knexInstance<Blogs>("blogs").select("*").orderBy("date", "desc"),
-		{ key: "blogs" }
-	);
+		{key: "blogs"}
+	)
 }
 
 export default function Blog() {
-	const blogs = useRouteData<typeof routeData>();
+	const blogs = useRouteData<typeof routeData>()
 
 	return (
 		<div class="is-max-desktop container">
 			<Suspense fallback={<p>Ielādē...</p>}>
 				<For each={blogs()}>
-					{(blog) => (
+					{blog => (
 						<div class="card block">
 							<div class="card-header">
 								<div class="card-header-title has-background-primary-light level">
@@ -82,5 +82,5 @@ export default function Blog() {
 				</For>
 			</Suspense>
 		</div>
-	);
+	)
 }

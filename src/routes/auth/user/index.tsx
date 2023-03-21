@@ -1,4 +1,4 @@
-import { A } from "solid-start";
+import {A} from "solid-start"
 
 export default function UserView() {
 	return (
@@ -14,5 +14,5 @@ export default function UserView() {
 				</ul>
 			</div>
 		</div>
-	);
+	)
 }

@@ -1,23 +1,18 @@
-import { Suspense } from "solid-js";
-import {
-	createRouteData,
-	Outlet,
-	useNavigate,
-	useRouteData,
-} from "solid-start";
-import { createServerData$ } from "solid-start/server";
-import { getLogin } from "~/scripts/login";
+import {Suspense} from "solid-js"
+import {createRouteData, Outlet, useNavigate, useRouteData} from "solid-start"
+import {createServerData$} from "solid-start/server"
+import {getLogin} from "~/scripts/login"
 
 export function routeData() {
 	return createServerData$(async (_, f) => {
-		return getLogin(f.request);
-	});
+		return getLogin(f.request)
+	})
 }
 
 export default function UsersLayout() {
-	const getLoginResource = useRouteData<typeof routeData>();
+	const getLoginResource = useRouteData<typeof routeData>()
 
-	const navigate = useNavigate();
+	const navigate = useNavigate()
 
 	// TODO Login and validate
 
@@ -31,7 +26,7 @@ export default function UsersLayout() {
 						<h1>Lūdzams autentificēties lai piekļūtu šim resursam!</h1>
 						<button
 							class="button"
-							onClick={() => navigate("/auth/login", { replace: true })}
+							onClick={() => navigate("/auth/login", {replace: true})}
 						>
 							Uz pierakstīšanās lapu
 						</button>
@@ -39,5 +34,5 @@ export default function UsersLayout() {
 				)}
 			</Suspense>
 		</div>
-	);
+	)
 }

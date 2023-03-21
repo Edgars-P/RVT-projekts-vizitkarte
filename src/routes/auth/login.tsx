@@ -1,53 +1,53 @@
-import { A } from "@solidjs/router";
-import { createSignal, Show, Suspense } from "solid-js";
+import {A} from "@solidjs/router"
+import {createSignal, Show, Suspense} from "solid-js"
 import {
 	createCookie,
 	createRouteData,
 	useNavigate,
 	useRouteData,
-} from "solid-start";
+} from "solid-start"
 import {
 	createServerAction$,
 	createServerData$,
 	redirect,
-} from "solid-start/server";
-import { getLogin, logIn } from "~/scripts/login";
+} from "solid-start/server"
+import {getLogin, logIn} from "~/scripts/login"
 
 export function routeData() {
 	return createServerData$(async (_, f) => {
-		return getLogin(f.request);
-	});
+		return getLogin(f.request)
+	})
 }
 
 export default function LoginView() {
-	const isLoggedInResource = useRouteData<typeof routeData>();
+	const isLoggedInResource = useRouteData<typeof routeData>()
 
-	const navigate = useNavigate();
-	const getLoginResource = useRouteData<typeof routeData>();
+	const navigate = useNavigate()
+	const getLoginResource = useRouteData<typeof routeData>()
 
-	const [loginaction, { Form }] = createServerAction$(
+	const [loginaction, {Form}] = createServerAction$(
 		async (formdata: FormData) => {
 			const res = await logIn(
 				formdata.get("user")?.toString() ?? "",
 				formdata.get("pass")?.toString() ?? ""
-			);
+			)
 
-			console.log(res);
+			console.log(res)
 
 			if (res === false) {
-				throw new Error("Lietotājvārds vai parole nav pareiza!");
+				throw new Error("Lietotājvārds vai parole nav pareiza!")
 			}
 
 			return redirect(res.isAdmin ? "/auth/admin/" : "/auth/user/", {
 				headers: {
 					"Set-Cookie": `secret=${res.secret}; SameSite=Strict; HttpOnly; Path=/`,
 				},
-			});
+			})
 		}
-	);
+	)
 
-	const [getUser, setUser] = createSignal("");
-	const [getPass, setPass] = createSignal("");
+	const [getUser, setUser] = createSignal("")
+	const [getPass, setPass] = createSignal("")
 
 	return (
 		<div class="is-max-desktop container">
@@ -62,7 +62,7 @@ export default function LoginView() {
 								<h1>Tu esi pierakstījies!</h1>
 								<button
 									class="button"
-									onClick={() => navigate("/admin/dash", { replace: true })}
+									onClick={() => navigate("/admin/dash", {replace: true})}
 								>
 									Uz administratora logu
 								</button>
@@ -75,8 +75,8 @@ export default function LoginView() {
 										<button
 											class="button is-small"
 											onClick={() => {
-												setUser("Admin");
-												setPass("qwertyuiopasdf");
+												setUser("Admin")
+												setPass("qwertyuiopasdf")
 											}}
 										>
 											Admin lietotājs
@@ -84,8 +84,8 @@ export default function LoginView() {
 										<button
 											class="button is-small"
 											onClick={() => {
-												setUser("Edgars");
-												setPass("1234567890");
+												setUser("Edgars")
+												setPass("1234567890")
 											}}
 										>
 											Parasts lietotājs
@@ -147,5 +147,5 @@ export default function LoginView() {
 				</div>
 			</div>
 		</div>
-	);
+	)
 }

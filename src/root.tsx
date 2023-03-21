@@ -1,5 +1,5 @@
 // @refresh reload
-import { Resource, Suspense } from "solid-js";
+import {Resource, Suspense} from "solid-js"
 import {
 	A,
 	Body,
@@ -13,13 +13,13 @@ import {
 	Title,
 	useLocation,
 	useRouteData,
-} from "solid-start";
-import { createServerAction$, createServerData$ } from "solid-start/server";
-import Navigation from "./components/Nav";
-import "./root.css";
-import { routeData } from "./root.data";
+} from "solid-start"
+import {createServerAction$, createServerData$} from "solid-start/server"
+import Navigation from "./components/Nav"
+import "./root.css"
+import {routeData} from "./root.data"
 
-import "bulma";
+import "bulma"
 
 export default function Root() {
 	return (
@@ -57,5 +57,5 @@ export default function Root() {
 				<br />
 			</Body>
 		</Html>
-	);
+	)
 }

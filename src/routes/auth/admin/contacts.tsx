@@ -1,29 +1,29 @@
-import { For, Suspense } from "solid-js";
-import { useRouteData } from "solid-start";
-import { createServerAction$, createServerData$ } from "solid-start/server";
-import { Contact, knexInstance } from "~/scripts/database";
+import {For, Suspense} from "solid-js"
+import {useRouteData} from "solid-start"
+import {createServerAction$, createServerData$} from "solid-start/server"
+import {Contact, knexInstance} from "~/scripts/database"
 
 export function routeData() {
 	return createServerData$(
 		() => knexInstance<Contact>("contacts").select("*"),
-		{ key: "contacts" }
-	);
+		{key: "contacts"}
+	)
 }
 
 export default function AdminView() {
-	const submittedContacts = useRouteData<typeof routeData>();
+	const submittedContacts = useRouteData<typeof routeData>()
 
 	const [isDeleting, doDelete] = createServerAction$(
 		async (email: string, e) => {
-			await knexInstance<Contact>("contacts").where("email", email).del();
+			await knexInstance<Contact>("contacts").where("email", email).del()
 		},
-		{ invalidate: "contacts" }
-	);
+		{invalidate: "contacts"}
+	)
 
 	return (
 		<div class="card-content">
 			<Suspense fallback={<p>Ielādē...</p>}>
-				<table class="table" style={{ width: "100%" }}>
+				<table class="table" style={{width: "100%"}}>
 					<thead>
 						<tr>
 							<th>Vārds</th>
@@ -34,7 +34,7 @@ export default function AdminView() {
 					</thead>
 					<tbody>
 						<For each={submittedContacts()} fallback={<p>Iesniegumu nav!</p>}>
-							{(e) => (
+							{e => (
 								<tr>
 									<td>{e.name}</td>
 									<td>{e.surname}</td>
@@ -48,7 +48,7 @@ export default function AdminView() {
 											class="button is-small is-danger"
 											disabled={isDeleting.pending}
 											onClick={() => {
-												doDelete(e.email);
+												doDelete(e.email)
 											}}
 										>
 											Dzēst
@@ -61,5 +61,5 @@ export default function AdminView() {
 				</table>
 			</Suspense>
 		</div>
-	);
+	)
 }

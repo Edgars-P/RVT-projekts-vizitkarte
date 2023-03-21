@@ -1,5 +1,5 @@
-import { Title } from "solid-start";
-import { HttpStatusCode } from "solid-start/server";
+import {Title} from "solid-start"
+import {HttpStatusCode} from "solid-start/server"
 
 export default function NotFound() {
 	return (
@@ -15,5 +15,5 @@ export default function NotFound() {
 				to learn how to build SolidStart apps.
 			</p>
 		</main>
-	);
+	)
 }

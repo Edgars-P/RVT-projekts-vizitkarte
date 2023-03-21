@@ -1,31 +1,31 @@
-import { For, Suspense } from "solid-js";
-import { useRouteData } from "solid-start/data";
+import {For, Suspense} from "solid-js"
+import {useRouteData} from "solid-start/data"
 import {
 	createServerAction$,
 	createServerData$,
 	redirect,
-} from "solid-start/server";
-import { knexInstance, Reviews } from "~/scripts/database";
-import "../styles/Reviews.css";
+} from "solid-start/server"
+import {knexInstance, Reviews} from "~/scripts/database"
+import "../styles/Reviews.css"
 
 export function routeData() {
 	return createServerData$(async () =>
 		knexInstance<Reviews>("reviews").orderBy("created_at", "desc").select("*")
-	);
+	)
 }
 
 export default function Feedback() {
-	const [_, { Form }] = createServerAction$(async (formData: FormData) => {
+	const [_, {Form}] = createServerAction$(async (formData: FormData) => {
 		await knexInstance<Reviews>("reviews").insert({
 			name: formData.get("name")?.toString() ?? "???",
 			stars: parseInt(formData.get("stars")?.toString() ?? "5"),
 			review: formData.get("review")?.toString() ?? "???",
-		});
+		})
 
-		return redirect("/reviews");
-	});
+		return redirect("/reviews")
+	})
 
-	const submittedReviews = useRouteData<typeof routeData>();
+	const submittedReviews = useRouteData<typeof routeData>()
 
 	return (
 		<div class="is-max-desktop container">
@@ -80,7 +80,7 @@ export default function Feedback() {
 								</div>
 							}
 						>
-							{(review) => (
+							{review => (
 								<div class="content">
 									<div class="reviewHeader">
 										<img
@@ -116,5 +116,5 @@ export default function Feedback() {
 				</div>
 			</div>
 		</div>
-	);
+	)
 }

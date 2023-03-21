@@ -1,15 +1,15 @@
-import { parseCookie } from "solid-start";
-import { knexInstance, Users } from "./database";
+import {parseCookie} from "solid-start"
+import {knexInstance, Users} from "./database"
 
 export async function getLogin(r: Request): Promise<Users> {
-	const cookies = parseCookie(r.headers.get("Cookie") ?? "");
+	const cookies = parseCookie(r.headers.get("Cookie") ?? "")
 
 	const res = await knexInstance<Users>("users")
 		.select("*")
 		.from("users")
-		.where({ secret: cookies["secret"] ?? "aaa" });
+		.where({secret: cookies["secret"] ?? "aaa"})
 
-	return res[0];
+	return res[0]
 }
 
 export async function logIn(
@@ -19,13 +19,13 @@ export async function logIn(
 	const res = await knexInstance<Users>("users")
 		.select("*")
 		.from("users")
-		.where({ username: user, password: await hashPassword(pass) });
+		.where({username: user, password: await hashPassword(pass)})
 
-	console.log(res);
+	console.log(res)
 
-	if (res.length == 0) return false;
+	if (res.length == 0) return false
 
-	return res[0];
+	return res[0]
 }
 
 export async function register(userObj: Users): Promise<number[] | "ERROR"> {
@@ -38,23 +38,23 @@ export async function register(userObj: Users): Promise<number[] | "ERROR"> {
 				"hex"
 			),
 			isAdmin: false,
-		});
-		console.log(typeof res);
+		})
+		console.log(typeof res)
 
-		return res;
+		return res
 	} catch {
-		return "ERROR";
+		return "ERROR"
 	}
 }
 
 const passwordSeed = Buffer.from(
 	crypto.getRandomValues(new Uint8Array(32))
-).toString("hex");
+).toString("hex")
 
 export async function hashPassword(password: string): Promise<string> {
 	const hash = await crypto.subtle.digest(
 		"SHA-512",
 		Buffer.from(password + passwordSeed)
-	);
-	return Buffer.from(new Uint8Array(hash)).toString("hex");
+	)
+	return Buffer.from(new Uint8Array(hash)).toString("hex")
 }

@@ -1,4 +1,4 @@
-import { A } from "solid-start";
+import {A} from "solid-start"
 
 export default function AdminView() {
 	return (
@@ -16,5 +16,5 @@ export default function AdminView() {
 				</ul>
 			</div>
 		</div>
-	);
+	)
 }

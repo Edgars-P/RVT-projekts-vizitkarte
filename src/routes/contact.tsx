@@ -1,18 +1,18 @@
-import { A, redirect } from "solid-start";
-import { createServerAction$ } from "solid-start/server/data.js";
-import { Contact as ContactType, knexInstance } from "~/scripts/database.js";
-import "../styles/Contact.css";
+import {A, redirect} from "solid-start"
+import {createServerAction$} from "solid-start/server/data.js"
+import {Contact as ContactType, knexInstance} from "~/scripts/database.js"
+import "../styles/Contact.css"
 
 export default function Contact() {
-	const [_, { Form }] = createServerAction$(async (formData: FormData) => {
+	const [_, {Form}] = createServerAction$(async (formData: FormData) => {
 		await knexInstance<ContactType>("contacts").insert({
 			name: formData.get("name")?.toString() ?? "???",
 			surname: formData.get("surname")?.toString() ?? "???",
 			email: formData.get("email")?.toString() ?? "???",
-		});
+		})
 
-		return redirect("/contact-success");
-	});
+		return redirect("/contact-success")
+	})
 
 	return (
 		<>
@@ -110,5 +110,5 @@ export default function Contact() {
 				</Form>
 			</div>
 		</>
-	);
+	)
 }

@@ -4,29 +4,29 @@ import {
 	createSignal,
 	Show,
 	Signal,
-} from "solid-js";
-import { createServerAction$, redirect } from "solid-start/server";
-import { logIn, register } from "~/scripts/login";
+} from "solid-js"
+import {createServerAction$, redirect} from "solid-start/server"
+import {logIn, register} from "~/scripts/login"
 
 function model(element: HTMLInputElement, value: Accessor<Signal<string>>) {
-	const [field, setField] = value();
-	createRenderEffect(() => (element.value = field()));
-	element.addEventListener("input", (e) =>
+	const [field, setField] = value()
+	createRenderEffect(() => (element.value = field()))
+	element.addEventListener("input", e =>
 		setField((e.target as HTMLInputElement)?.value)
-	);
+	)
 }
 
 declare module "solid-js" {
 	namespace JSX {
 		interface Directives {
 			// use:model
-			model: Signal<string>;
+			model: Signal<string>
 		}
 	}
 }
 
 export default function Register() {
-	const [registering, { Form }] = createServerAction$(
+	const [registering, {Form}] = createServerAction$(
 		async (formdata: FormData) => {
 			const res = await register({
 				isAdmin: false,
@@ -34,20 +34,20 @@ export default function Register() {
 				username: formdata.get("user")?.toString() ?? "",
 				password: formdata.get("pass")?.toString() ?? "",
 				secret: "",
-			});
+			})
 
 			if (res === "ERROR") {
-				throw new Error("Nepareizi dati vai lietotājs jau pastāv!");
+				throw new Error("Nepareizi dati vai lietotājs jau pastāv!")
 			}
 
-			return redirect("/auth/register");
+			return redirect("/auth/register")
 		}
-	);
+	)
 
-	const [password, setPassword] = createSignal("");
-	const [password2, setPassword2] = createSignal("");
+	const [password, setPassword] = createSignal("")
+	const [password2, setPassword2] = createSignal("")
 
-	const passwordsMatch = () => password() !== "" && password() === password2();
+	const passwordsMatch = () => password() !== "" && password() === password2()
 
 	return (
 		<div class="is-max-desktop container">
@@ -134,5 +134,5 @@ export default function Register() {
 				</div>
 			</div>
 		</div>
-	);
+	)
 }

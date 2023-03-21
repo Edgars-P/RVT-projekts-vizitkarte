@@ -1,34 +1,34 @@
-import { A } from "@solidjs/router";
-import { Suspense } from "solid-js";
+import {A} from "@solidjs/router"
+import {Suspense} from "solid-js"
 import {
 	createRouteData,
 	Outlet,
 	useLocation,
 	useNavigate,
 	useRouteData,
-} from "solid-start";
-import { createServerData$ } from "solid-start/server";
-import { getLogin } from "~/scripts/login";
+} from "solid-start"
+import {createServerData$} from "solid-start/server"
+import {getLogin} from "~/scripts/login"
 
 export function routeData() {
 	return createServerData$(async (_, f) => {
-		return await getLogin(f.request);
-	});
+		return await getLogin(f.request)
+	})
 }
 
 const adminTabs = [
-	{ name: "Iesniegtie kontakti", url: "/auth/admin/contacts" },
-	{ name: "Bloga ieraksti", url: "/auth/admin/blogs" },
-];
+	{name: "Iesniegtie kontakti", url: "/auth/admin/contacts"},
+	{name: "Bloga ieraksti", url: "/auth/admin/blogs"},
+]
 
 export default function UsersLayout() {
-	const getLoginResource = useRouteData<typeof routeData>();
+	const getLoginResource = useRouteData<typeof routeData>()
 
-	const navigate = useNavigate();
+	const navigate = useNavigate()
 
 	// TODO Login and validate
 
-	const url = useLocation();
+	const url = useLocation()
 
 	// TODO Login and validate
 
@@ -44,10 +44,8 @@ export default function UsersLayout() {
 						</div>
 						<div class="tabs">
 							<ul>
-								{adminTabs.map((tab) => (
-									<li
-										classList={{ "is-active": url.pathname.includes(tab.url) }}
-									>
+								{adminTabs.map(tab => (
+									<li classList={{"is-active": url.pathname.includes(tab.url)}}>
 										<A href={tab.url}>{tab.name}</A>
 									</li>
 								))}
@@ -60,7 +58,7 @@ export default function UsersLayout() {
 						<h1>Pieeja nav atļauta!</h1>
 						<button
 							class="button"
-							onClick={() => navigate("/auth/login", { replace: true })}
+							onClick={() => navigate("/auth/login", {replace: true})}
 						>
 							Uz pierakstīšanās lapu
 						</button>
@@ -68,5 +66,5 @@ export default function UsersLayout() {
 				)}
 			</Suspense>
 		</div>
-	);
+	)
 }
