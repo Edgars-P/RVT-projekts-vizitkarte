@@ -30,6 +30,7 @@ export interface Comment {
 	content: string
 	article: number
 	date: any
+	replyto: number
 }
 await knexInstance.schema.createTable("comments", t => {
 	t.increments("id", {primaryKey: true})

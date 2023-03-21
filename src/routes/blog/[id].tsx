@@ -1,4 +1,4 @@
-import {createEffect, For, Show, Suspense} from "solid-js"
+import {createEffect, createSignal, For, Show, Suspense} from "solid-js"
 import {A, RouteDataArgs, useParams, useRouteData} from "solid-start"
 import {createServerAction$, createServerData$} from "solid-start/server"
 import {Blogs, Comment, knexInstance} from "~/scripts/database"
@@ -30,7 +30,39 @@ export function routeData({params}: RouteDataArgs) {
 	return {content, comments, isLoggedIn}
 }
 
-function Comment(props: {id: string; comments: Comment[]}) {}
+function CommentElement(props: {comment: Comment; comments: Comment[]}) {
+	return (
+		<article
+			class="message"
+			style={{"margin-bottom": "0.5rem", border: "0.1rem solid #00000033"}}
+		>
+			<div class="message-header">
+				<p>{props.comment.author}</p>
+				<p class="is-size-7">{new Date(props.comment.date).toLocaleString()}</p>
+			</div>
+			<div
+				class="message-body"
+				style={{"padding-right": "0.5rem", "padding-bottom": "0"}}
+			>
+				<p>{props.comment.content}</p>
+				<For each={props.comments.filter(x => x.replyto === props.comment.id)}>
+					{reply => (
+						<CommentElement comment={reply} comments={props.comments} />
+					)}
+				</For>
+				<button
+					class="button is-small is-text"
+					onClick={() => setReplyTo(props.comment.id)}
+				>
+					Atbildēt
+				</button>
+			</div>
+		</article>
+	)
+}
+
+const [getReplyTo, setReplyTo] = createSignal(-1)
+const [getRekey, setReKey] = createSignal(1)
 
 export default function Blog() {
 	const params = useParams()
@@ -45,11 +77,14 @@ export default function Blog() {
 
 			console.log(form)
 
+			const replyTo = parseInt(form.get("replyto")?.toString() ?? "-1")
+
 			await knexInstance<Comment>("comments").insert({
 				article: parseInt(form.get("blog")?.toString() ?? "1"),
 				author: user.username,
 				content: form.get("content")?.toString() ?? "...",
 				date: Date.now(),
+				replyto: replyTo == -1 ? undefined : replyTo,
 			})
 		}
 	)
@@ -80,6 +115,12 @@ export default function Blog() {
 						fallback={<p>Lūdzu ienākt vai reģistrēties lai konemtētu!</p>}
 					>
 						<CommentForm>
+							<Show when={getReplyTo() !== -1}>
+								<div class="notification">
+									<button class="delete" onClick={() => setReplyTo(-1)} />
+									Atbild komentāram {"#" + getReplyTo()}
+								</div>
+							</Show>
 							<div class="field">
 								<textarea name="content" class="textarea"></textarea>
 							</div>
@@ -89,6 +130,7 @@ export default function Blog() {
 								value={blogID}
 								disabled={commenting.pending}
 							/>
+							<input type="hidden" name="replyto" value={getReplyTo()} />
 							<div class="field is-grouped is-grouped-centered">
 								<div class="control">
 									<input
@@ -104,17 +146,15 @@ export default function Blog() {
 				</Suspense>
 				<hr />
 				<Suspense fallback={<p>Ielādē...</p>}>
-					<For each={comments()} fallback={<p>Komentāru nav!</p>}>
+					<For
+						each={comments()?.filter(x => x.replyto === null)}
+						fallback={<p>Komentāru nav!</p>}
+					>
 						{comment => (
-							<article class="message" style={{"margin-bottom": "0.5rem"}}>
-								<div class="message-header">
-									<p>{comment.author}</p>
-									<p class="is-size-7">
-										{new Date(comment.date).toLocaleString()}
-									</p>
-								</div>
-								<div class="message-body">{comment.content}</div>
-							</article>
+							<CommentElement
+								comment={comment}
+								comments={comments() as Comment[]}
+							/>
 						)}
 					</For>
 				</Suspense>
