@@ -1,4 +1,4 @@
-import {Suspense} from "solid-js"
+import {Show, Suspense} from "solid-js"
 import {A, useLocation, useRouteData} from "solid-start"
 import {
 	createServerAction$,
@@ -7,12 +7,15 @@ import {
 } from "solid-start/server"
 import {knexInstance, Reviews} from "~/scripts/database"
 import {getLogin} from "~/scripts/login"
+import LoginButton from "./LoginButton"
 
 export default function Navigation() {
 	const location = useLocation()
 
 	const getLoginResource = createServerData$(async (_, f) => {
-		return await getLogin(f.request)
+		const x = await getLogin(f.request)
+		console.log(x)
+		return x
 	})
 
 	const logOut = createServerAction$(async (_, b) => {
@@ -67,34 +70,24 @@ export default function Navigation() {
 						<div class="navbar-item">
 							<div class="buttons">
 								<Suspense>
-									{getLoginResource() ? (
-										<>
-											<A
-												href={
-													getLoginResource()?.isAdmin
-														? "/auth/admin"
-														: "/auth/user"
-												}
-												class="button"
-											>
-												{getLoginResource()?.isAdmin ? (
-													<>
-														<i class="bi bi-wrench-adjustable"></i>&nbsp;
-													</>
-												) : (
-													""
-												)}
-												{getLoginResource()?.username}
-											</A>
-											<a class="button is-danger" href={logOut[1].url}>
-												<i class="bi bi-box-arrow-left"></i>
-											</a>
-										</>
-									) : (
-										<A href="/auth/login" class="button">
-											Ienākt
+									<Show when={getLoginResource()} fallback={<LoginButton />}>
+										<A
+											href={
+												getLoginResource()?.isAdmin
+													? "/auth/admin"
+													: "/auth/user"
+											}
+											class="button"
+										>
+											<Show when={getLoginResource()?.isAdmin}>
+												<i class="bi bi-wrench-adjustable"></i>&nbsp;
+											</Show>
+											{getLoginResource()?.username}
 										</A>
-									)}
+										<a class="button is-danger" href={logOut[1].url}>
+											<i class="bi bi-box-arrow-left"></i>
+										</a>
+									</Show>
 								</Suspense>
 							</div>
 						</div>
