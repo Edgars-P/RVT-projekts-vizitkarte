@@ -84,7 +84,7 @@ export default function Blog() {
 				author: user.username,
 				content: form.get("content")?.toString() ?? "...",
 				date: Date.now(),
-				replyto: replyTo == -1 ? undefined : replyTo,
+				replyto: replyTo == -1 ? null : replyTo,
 			})
 		}
 	)

@@ -24,25 +24,6 @@ await knexInstance.schema.createTable("blogs", t => {
 	t.date("date")
 })
 
-export interface Comment {
-	id: number
-	author: string
-	content: string
-	article: number
-	date: any
-	replyto: number
-}
-await knexInstance.schema.createTable("comments", t => {
-	t.increments("id", {primaryKey: true})
-	t.string("author")
-	t.foreign("author").references("username").inTable("users")
-	t.integer("article")
-	t.foreign("article").references("id").inTable("blogs")
-	t.string("content")
-	t.integer("replyto").references("id").inTable("comments")
-	t.date("date")
-})
-
 Array(10)
 	.fill("")
 	.map((_, i) => {
@@ -55,6 +36,36 @@ Array(10)
 	})
 	.forEach(async e => {
 		await knexInstance<Blogs>("blogs").insert(e)
+	})
+
+export interface Comment {
+	id: number
+	author: string
+	content: string
+	article: number
+	date: any
+	replyto: number | null
+}
+await knexInstance.schema.createTable("comments", t => {
+	t.increments("id", {primaryKey: true})
+	t.string("author")
+	t.foreign("author").references("username").inTable("users")
+	t.integer("article")
+	t.foreign("article").references("id").inTable("blogs")
+	t.string("content")
+	t.integer("replyto").references("id").inTable("comments").nullable()
+	t.date("date")
+})
+
+Array(10)
+	.fill("")
+	.map(async (_, i) => {
+		await knexInstance<Comment>("comments").insert({
+			author: "Edgars",
+			article: Math.ceil(Math.random() * 9),
+			content: faker.lorem.sentence(),
+			date: faker.date.recent(),
+		})
 	})
 
 export interface Contact {
