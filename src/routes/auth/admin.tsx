@@ -19,6 +19,7 @@ export function routeData() {
 const adminTabs = [
 	{name: "Iesniegtie kontakti", url: "/auth/admin/contacts"},
 	{name: "Bloga ieraksti", url: "/auth/admin/blogs"},
+	{name: "Lietotāji", url: "/auth/admin/users"},
 ]
 
 export default function UsersLayout() {
@@ -42,7 +43,7 @@ export default function UsersLayout() {
 								Administratora panelis
 							</div>
 						</div>
-						<div class="tabs">
+						<div class="tabs" style={{"margin-bottom": "0"}}>
 							<ul>
 								{adminTabs.map(tab => (
 									<li classList={{"is-active": url.pathname.includes(tab.url)}}>
