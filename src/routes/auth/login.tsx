@@ -38,7 +38,7 @@ export default function LoginView() {
 				throw new Error("Lietotājvārds vai parole nav pareiza!")
 			}
 
-			return redirect(res.isAdmin ? "/auth/admin/" : "/auth/user/", {
+			return redirect(formdata.get("return")?.toString() ?? "/", {
 				headers: {
 					"Set-Cookie": `secret=${res.secret}; SameSite=Strict; HttpOnly; Path=/`,
 				},
@@ -140,6 +140,13 @@ export default function LoginView() {
 									<p class="has-text-centered">
 										Jauns lietotājs? <A href="/auth/register">Reģistrēties</A>
 									</p>
+									<input
+										type="hidden"
+										name="return"
+										value={
+											globalThis.localStorage?.getItem("returnHref") ?? "#"
+										}
+									/>
 								</Form>
 							</>
 						)}

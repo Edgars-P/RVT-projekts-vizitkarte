@@ -40,7 +40,7 @@ export default function Register() {
 				throw new Error("Nepareizi dati vai lietotājs jau pastāv!")
 			}
 
-			return redirect("/auth/register")
+			return redirect("/auth/login")
 		}
 	)
 
@@ -130,6 +130,11 @@ export default function Register() {
 								</button>
 							</p>
 						</div>
+						<input
+							type="hidden"
+							name="return"
+							value={globalThis.localStorage?.getItem("returnHref") ?? "/"}
+						/>
 					</Form>
 				</div>
 			</div>
