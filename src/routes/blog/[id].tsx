@@ -148,7 +148,7 @@ export default function Blog() {
 				<Suspense fallback={<p>Ielādē...</p>}>
 					<For
 						each={comments()?.filter(x => x.replyto === null)}
-						fallback={<p>Komentāru nav!</p>}
+						fallback={<div class="notification">Komentāru nav!</div>}
 					>
 						{comment => (
 							<CommentElement
