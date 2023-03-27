@@ -23,14 +23,16 @@ export function routeData({params}: RouteDataArgs) {
 		{key: [params.id, "comments"]}
 	)
 
-	const isLoggedIn = createServerData$(async (_, f) => {
+	const getLoginObj = createServerData$(async (_, f) => {
 		return await getLogin(f.request)
 	})
 
-	return {content, comments, isLoggedIn}
+	return {content, comments, getLoginObj}
 }
 
 function CommentElement(props: {comment: Comment; comments: Comment[]}) {
+	const {getLoginObj} = useRouteData<typeof routeData>()
+
 	return (
 		<article
 			class="message"
@@ -38,7 +40,28 @@ function CommentElement(props: {comment: Comment; comments: Comment[]}) {
 		>
 			<div class="message-header">
 				<p>{props.comment.author}</p>
-				<p class="is-size-7">{new Date(props.comment.date).toLocaleString()}</p>
+				<div style={{"white-space": "nowrap"}} class="level">
+					<span class="is-size-7">
+						{new Date(props.comment.date).toLocaleString()}
+					</span>
+					<Suspense>
+						<Show
+							when={
+								getLoginObj()?.isAdmin ||
+								getLoginObj()?.username === props.comment.author
+							}
+						>
+							&nbsp;
+							<button
+								onClick={() => alert("TODO")}
+								class="button is-danger is-outlined is-small"
+								style={{padding: "0.3rem"}}
+							>
+								<i class="bi bi-trash3-fill"></i>
+							</button>
+						</Show>
+					</Suspense>
+				</div>
 			</div>
 			<div
 				class="message-body"
@@ -68,7 +91,7 @@ export default function Blog() {
 	const params = useParams()
 	const blogID = parseInt(params.id)
 
-	const {content, comments, isLoggedIn} = useRouteData<typeof routeData>()
+	const {content, comments, getLoginObj} = useRouteData<typeof routeData>()
 
 	const [commenting, {Form: CommentForm}] = createServerAction$(
 		async (form: FormData, {request}) => {
@@ -111,7 +134,7 @@ export default function Blog() {
 			<div class="card-content">
 				<Suspense fallback={<p>Ielādē...</p>}>
 					<Show
-						when={isLoggedIn()}
+						when={getLoginObj()}
 						fallback={<p>Lūdzu ienākt vai reģistrēties lai konemtētu!</p>}
 					>
 						<CommentForm>
