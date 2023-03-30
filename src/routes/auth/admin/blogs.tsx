@@ -1,6 +1,6 @@
 import {createSignal, For, Show, Suspense} from "solid-js"
 import {useRouteData} from "solid-start"
-import {createServerData$} from "solid-start/server"
+import {createServerAction$, createServerData$} from "solid-start/server"
 import {Blogs, knexInstance} from "~/scripts/database"
 
 export function routeData() {
@@ -12,12 +12,29 @@ export function routeData() {
 export default function BlogView() {
 	const blogs = useRouteData<typeof routeData>()
 
+	const [isDeleting, doDelete] = createServerAction$(
+		async (blogId: number, {request}) => {
+			await knexInstance<Blogs>("blogs").where({id: blogId}).delete()
+		},
+		{invalidate: "blogs"}
+	)
+
+	const [isEditing, doEdit] = createServerAction$(
+		async (data: {blogId: number; newContent: string}) => {
+			await knexInstance<Blogs>("blogs")
+				.where({id: data.blogId})
+				.update({content: data.newContent})
+		},
+		{invalidate: "blogs"}
+	)
+
 	return (
 		<Suspense fallback={<p>Ielādē...</p>}>
 			<div class="card-content">
 				<For each={blogs()}>
 					{blog => {
 						const [isEdit, setIsEdit] = createSignal(false)
+						const [getNewContent, setNewContent] = createSignal(blog.content)
 						return (
 							<>
 								<div class="card">
@@ -31,7 +48,10 @@ export default function BlogView() {
 										</button>
 										<button
 											class="card-header-icon"
-											onClick={() => alert("TODO")}
+											onClick={() =>
+												confirm("Tiešām dzēst?") && doDelete(blog.id)
+											}
+											disabled={isDeleting.pending}
 										>
 											<i class="bi bi-trash3-fill"></i>
 										</button>
@@ -44,8 +64,22 @@ export default function BlogView() {
 											<textarea
 												value={blog.content}
 												style={{width: "100%", height: "30rem"}}
+												onInput={e =>
+													setNewContent((e.target as HTMLTextAreaElement).value)
+												}
 											></textarea>
-											<button class="button" onClick={() => alert("TODO")}>
+											<p innerHTML={getNewContent()} />
+											<button
+												class="button"
+												onClick={async () => {
+													await doEdit({
+														blogId: blog.id,
+														newContent: getNewContent(),
+													})
+													setIsEdit(false)
+												}}
+												disabled={isEditing.pending}
+											>
 												Saglabāt
 											</button>
 											<button class="button" onClick={() => setIsEdit(false)}>
