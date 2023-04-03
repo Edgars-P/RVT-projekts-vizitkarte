@@ -2,6 +2,7 @@ import {createSignal, For, Show, Suspense} from "solid-js"
 import {useRouteData} from "solid-start"
 import {createServerAction$, createServerData$} from "solid-start/server"
 import {Blogs, knexInstance} from "~/scripts/database"
+import { getLogin } from "~/scripts/login"
 
 export function routeData() {
 	return createServerData$(() => knexInstance<Blogs>("blogs").select("*"), {
@@ -14,6 +15,12 @@ export default function BlogView() {
 
 	const [isDeleting, doDelete] = createServerAction$(
 		async (blogId: number, {request}) => {
+			// validate request to be an admin
+			const login = await getLogin(request)
+			if (!login || !login.isAdmin) {
+				throw new Error("Unauthorized")
+			}
+
 			await knexInstance<Blogs>("blogs").where({id: blogId}).delete()
 		},
 		{invalidate: "blogs"}
@@ -62,13 +69,14 @@ export default function BlogView() {
 											fallback={<div innerHTML={blog.content} />}
 										>
 											<textarea
-												value={blog.content}
-												style={{width: "100%", height: "30rem"}}
-												onInput={e =>
-													setNewContent((e.target as HTMLTextAreaElement).value)
-												}
+												class="textarea"
+												value={getNewContent()}
+												onInput={e => setNewContent(e.currentTarget.value)}
 											></textarea>
-											<p innerHTML={getNewContent()} />
+											<div
+												class="content"
+												innerHTML={getNewContent()}
+											></div>
 											<button
 												class="button"
 												onClick={async () => {
