@@ -33,6 +33,12 @@ export function routeData({params}: RouteDataArgs) {
 function CommentElement(props: {comment: Comment; comments: Comment[]}) {
 	const {getLoginObj} = useRouteData<typeof routeData>()
 
+	const [isDeleting, doDelete] = createServerAction$(
+		async (commentId: number, _) => {
+			await knexInstance<Comment>("comments").where({id: commentId}).del()
+		}
+	)
+
 	return (
 		<article
 			class="message"
@@ -53,9 +59,10 @@ function CommentElement(props: {comment: Comment; comments: Comment[]}) {
 						>
 							&nbsp;
 							<button
-								onClick={() => alert("TODO")}
+								onClick={() => doDelete(props.comment.id)}
 								class="button is-danger is-outlined is-small"
 								style={{padding: "0.3rem"}}
+								disabled={isDeleting.pending}
 							>
 								<i class="bi bi-trash3-fill"></i>
 							</button>
