@@ -10,8 +10,12 @@ import "../styles/Reviews.css"
 import {getLogin} from "~/scripts/login"
 
 export function routeData() {
-	const submittedReviews = createServerData$(async () =>
-		knexInstance<Reviews>("reviews").orderBy("created_at", "desc").select("*")
+	const submittedReviews = createServerData$(
+		async () =>
+			knexInstance<Reviews>("reviews")
+				.orderBy("created_at", "desc")
+				.select("*"),
+		{key: "reviews"}
 	)
 
 	const loginDetails = createServerData$(async (_, f) => {
@@ -36,6 +40,26 @@ export default function Feedback() {
 
 			return redirect("/reviews")
 		}
+	)
+
+	const [isDeleting, doDelete] = createServerAction$(
+		async (id: number, {request}) => {
+			const user = await getLogin(request)
+			const review = await knexInstance<Reviews>("reviews")
+				.select("*")
+				.where({id})
+				.first()
+			if (
+				!(
+					user?.isAdmin ||
+					(user?.name === review?.name)
+				)
+			) {
+				throw new Error("Unauthorized")
+			}
+			await knexInstance<Reviews>("reviews").where({id}).delete()
+		},
+		{invalidate: "reviews"}
 	)
 
 	const {submittedReviews, loginDetails} = useRouteData<typeof routeData>()
@@ -111,35 +135,49 @@ export default function Feedback() {
 							}
 						>
 							{review => (
-								<div class="content">
-									<div class="reviewHeader">
-										<img
-											src={
-												"https://api.dicebear.com/5.x/bottts/svg?seed=" +
-												encodeURIComponent(review.name)
-											}
-											alt={review.name}
-											width={30}
-											height={30}
-										/>
-										<span class="name">{review.name}</span>
-										<span class="rating">
-											{Array(5)
-												.fill(0)
-												.map((_, i) => (
-													<i
-														class={
-															"bi " +
-															(i + 1 <= review.stars
-																? "bi-star-fill"
-																: "bi-star")
-														}
-													></i>
-												))}
-										</span>
+								<>
+								<div class="card">
+									<div class="card-header">
+										<div class="card-header-title">{review.name}</div>
+										<div class="spacer"></div>
+										<div class="card-header-icon">
+											<span class="rating">
+												{Array(5)
+													.fill(0)
+													.map((_, i) => (
+														<i
+															class={
+																"bi " +
+																(i + 1 <= review.stars
+																	? "bi-star-fill"
+																	: "bi-star")
+															}
+														></i>
+													))}
+											</span>
+										</div>
 									</div>
-									<p>{review.review}</p>
+									<div class="card-content">
+										<p>{review.review}</p>
+										<Show
+											when={
+												loginDetails()?.isAdmin ||
+												loginDetails()?.name === review.name
+											}
+										>
+											<button
+												onClick={() => doDelete(review.id)}
+												class="button is-danger is-outlined is-small"
+												style={{padding: "0.3rem"}}
+												disabled={isDeleting.pending}
+											>
+												<i class="bi bi-trash3-fill"></i> Dzēst
+											</button>
+										</Show>
+									</div>
 								</div>
+								<br />
+								</>
 							)}
 						</For>
 					</Suspense>
