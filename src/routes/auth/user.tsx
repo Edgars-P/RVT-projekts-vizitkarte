@@ -14,8 +14,6 @@ export default function UsersLayout() {
 
 	const navigate = useNavigate()
 
-	// TODO Login and validate
-
 	return (
 		<div class="is-max-desktop container">
 			<Suspense>
