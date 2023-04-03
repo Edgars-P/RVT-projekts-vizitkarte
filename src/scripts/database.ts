@@ -81,11 +81,13 @@ await knexInstance.schema.createTable("contacts", t => {
 })
 
 export interface Reviews {
+	id: number
 	name: string
 	stars: number
 	review: string
 }
 await knexInstance.schema.createTable("reviews", t => {
+	t.increments("id", {primaryKey: true})
 	t.string("name")
 	t.integer("stars")
 	t.string("review")
