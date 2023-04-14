@@ -2,17 +2,20 @@ import {A, redirect} from "solid-start"
 import {createServerAction$} from "solid-start/server/data.js"
 import {Contact as ContactType, knexInstance} from "~/scripts/database.js"
 import "../styles/Contact.css"
+import {Show} from "solid-js"
 
 export default function Contact() {
-	const [_, {Form}] = createServerAction$(async (formData: FormData) => {
-		await knexInstance<ContactType>("contacts").insert({
-			name: formData.get("name")?.toString() ?? "???",
-			surname: formData.get("surname")?.toString() ?? "???",
-			email: formData.get("email")?.toString() ?? "???",
-		})
+	const [isSubmitting, {Form}] = createServerAction$(
+		async (formData: FormData) => {
+			await knexInstance<ContactType>("contacts").insert({
+				name: formData.get("name")?.toString() ?? "???",
+				surname: formData.get("surname")?.toString() ?? "???",
+				email: formData.get("email")?.toString() ?? "???",
+			})
 
-		return redirect("/contact-success")
-	})
+			return true
+		}
+	)
 
 	return (
 		<>
@@ -65,49 +68,70 @@ export default function Contact() {
 				</div>
 			</div>
 			<div class="card-content">
-				<Form action="" method="post">
-					<div class="field">
-						<label class="label" for="name">
-							Vārds
-						</label>
-						<div class="control">
-							<input class="input" type="text" name="name" id="name" required />
+				<Show when={isSubmitting.error}>
+					<div class="notification is-danger">{isSubmitting.error.message}</div>
+				</Show>
+				<Show
+					when={!isSubmitting.result}
+					fallback={
+						<div class="notification is-success">Informācija iesniegta!</div>
+					}
+				>
+					<Form action="" method="post">
+						<div class="field">
+							<label class="label" for="name">
+								Vārds
+							</label>
+							<div class="control">
+								<input
+									class="input"
+									type="text"
+									name="name"
+									id="name"
+									required
+								/>
+							</div>
 						</div>
-					</div>
-					<div class="field">
-						<label class="label" for="surname">
-							Uzvārds
-						</label>
-						<div class="control">
-							<input
-								class="input"
-								type="text"
-								name="surname"
-								id="surname"
-								required
-							/>
+						<div class="field">
+							<label class="label" for="surname">
+								Uzvārds
+							</label>
+							<div class="control">
+								<input
+									class="input"
+									type="text"
+									name="surname"
+									id="surname"
+									required
+								/>
+							</div>
 						</div>
-					</div>
-					<div class="field">
-						<label class="label" for="email">
-							E-pasts
-						</label>
-						<div class="control">
-							<input
-								class="input"
-								type="text"
-								name="email"
-								id="email"
-								required
-							/>
+						<div class="field">
+							<label class="label" for="email">
+								E-pasts
+							</label>
+							<div class="control">
+								<input
+									class="input"
+									type="text"
+									name="email"
+									id="email"
+									required
+								/>
+							</div>
 						</div>
-					</div>
-					<div class="field is-grouped is-grouped-centered">
-						<p class="control">
-							<button class="button is-primary">Iesniegt</button>
-						</p>
-					</div>
-				</Form>
+						<div class="field is-grouped is-grouped-centered">
+							<p class="control">
+								<button
+									class="button is-primary"
+									disabled={isSubmitting.pending}
+								>
+									Iesniegt
+								</button>
+							</p>
+						</div>
+					</Form>
+				</Show>
 			</div>
 		</>
 	)
