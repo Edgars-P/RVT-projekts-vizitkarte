@@ -17,7 +17,6 @@ import {
 import {createServerAction$, createServerData$} from "solid-start/server"
 import Navigation from "./components/Nav"
 import "./root.css"
-import {routeData} from "./root.data"
 
 import "bulma"
 

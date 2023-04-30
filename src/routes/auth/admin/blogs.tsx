@@ -2,12 +2,77 @@ import {createSignal, For, Show, Suspense} from "solid-js"
 import {useRouteData} from "solid-start"
 import {createServerAction$, createServerData$} from "solid-start/server"
 import {Blogs, knexInstance} from "~/scripts/database"
-import { getLogin } from "~/scripts/login"
+import {getLogin} from "~/scripts/login"
 
 export function routeData() {
-	return createServerData$(() => knexInstance<Blogs>("blogs").select("*"), {
-		key: "blogs",
-	})
+	return createServerData$(
+		() => knexInstance<Blogs>("blogs").select("*").orderBy("date", "desc"),
+		{
+			key: "blogs",
+		}
+	)
+}
+
+function NewBlog() {
+	const [name, setName] = createSignal("")
+	const [content, setContent] = createSignal("")
+	const [isCreating, doCreate] = createServerAction$(
+		async (data: {name: string; content: string}) => {
+			await knexInstance<Blogs>("blogs").insert({
+				name: data.name,
+				content: data.content,
+				date: new Date(),
+			})
+		},
+		{invalidate: "blogs"}
+	)
+
+	return (
+		<div class="card">
+			<div class="card-header">
+				<p class="card-header-title">Jauns blogs</p>
+			</div>
+			<div class="card-content">
+				<div class="field">
+					<label class="label">Nosaukums</label>
+					<div class="control">
+						<input
+							class="input"
+							type="text"
+							value={name()}
+							onInput={e => setName(e.currentTarget.value)}
+						/>
+					</div>
+				</div>
+				<div class="field">
+					<label class="label">Saturs</label>
+					<div class="control">
+						<textarea
+							class="textarea"
+							value={content()}
+							onInput={e => setContent(e.currentTarget.value)}
+						/>
+					</div>
+				</div>
+				<div class="field">
+					<div class="control">
+						<button
+							class="button is-primary"
+							onClick={() =>
+								doCreate({
+									name: name(),
+									content: content(),
+								})
+							}
+							disabled={isCreating.pending}
+						>
+							Izveidot
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	)
 }
 
 export default function BlogView() {
@@ -38,6 +103,8 @@ export default function BlogView() {
 	return (
 		<Suspense fallback={<p>Ielādē...</p>}>
 			<div class="card-content">
+				<NewBlog />
+				<br />
 				<For each={blogs()}>
 					{blog => {
 						const [isEdit, setIsEdit] = createSignal(false)
@@ -73,10 +140,7 @@ export default function BlogView() {
 												value={getNewContent()}
 												onInput={e => setNewContent(e.currentTarget.value)}
 											></textarea>
-											<div
-												class="content"
-												innerHTML={getNewContent()}
-											></div>
+											<div class="content" innerHTML={getNewContent()}></div>
 											<button
 												class="button"
 												onClick={async () => {
