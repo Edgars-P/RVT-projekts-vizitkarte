@@ -1,11 +1,18 @@
 import {Faker, faker} from "@faker-js/faker"
 import knex, {Knex} from "knex"
 import {hashPassword} from "./login"
+import fs from "fs"
+
+const dbFile = "blog.db"
+
+try {
+	fs.rmSync(dbFile)
+} catch {}
 
 const config: Knex.Config = {
 	client: "sqlite3",
 	connection: {
-		filename: `/tmp/${crypto.randomUUID()}.db`,
+		filename: dbFile,
 	},
 }
 
